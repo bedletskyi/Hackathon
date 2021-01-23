@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  client:
+    image: buckwheat-client
+    stdin_open: true
+    ports:
+      - '8080:80'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    depends_on:
+      - server
+    volumes:
+      - /data/certs:/etc/nginx/certs
+    networks:
+      - buckwheat-parser
+  
+  server:
+    image: buckwheat-server
+    ports:
+      - "5000:5000"
+    networks:
+      - buckwheat-parser
+    depends_on:
+      - mongo
+  
+  mongo:
+    image: mongo:3.6.21-xenial
+    ports:
+      - "27017:27017"
+    networks:
+      - buckwheat-parser
+    volumes:
+      - mongo-data:/data/db
+    
+networks:
+  buckwheat-parser:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
