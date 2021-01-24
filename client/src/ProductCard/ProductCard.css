@@ -1,0 +1,31 @@
+.card-image{
+    height: 180px;
+    width: 290px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-price{
+    font-size: 24px;
+    color: #333333;
+}
+
+.card-price-currency{
+    font-size: 16px;
+    color: #333;
+}
+
+.card-name{
+    font-size: 14px;
+    color: #221f1f;
+}
+
+.card-price-wrapper{
+    margin: 10px 0 5px;
+}
+
+.card-additional-info{
+    color: #797878;
+    font-size: 12px;
+}
