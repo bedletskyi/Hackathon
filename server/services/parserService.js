@@ -1,7 +1,9 @@
+import { callApi } from '../helpers/apiHelper';
+
 const cherio = require('cherio');
 const { PuppeteerHandler } = require('../helpers/puppeteer');
 
-const AUCHAN = 'https://auchan.zakaz.ua/ru/search/?q=';
+const AUCHAN = 'https://stores-api.zakaz.ua/stores/48246401/products/search/?q=';
 const EPICENTR = 'https://epicentrk.ua/search/?q=';
 const FOZZYSHOP = 'https://fozzyshop.ua/ru/search?controller=search&s=';
 const epicentrName = 'epicentrk.ua';
@@ -13,15 +15,14 @@ const puppeteer = new PuppeteerHandler();
 export const parserService = {
     async getDataFromSites(searchQuery) {
         const cleanQuery = cleanString(searchQuery);
-        const epicentrItems = await this.getEpicentrItems(cleanQuery);
-        const auchanItems = await this.getAuchanItems(cleanQuery);
-        const fozzyshopItems = await this.getFozzyshopItems(cleanQuery);
-
-        return [
-            ...epicentrItems,
-            ...auchanItems,
-            ...fozzyshopItems,
-        ];
+        return Promise.all([
+            this.getEpicentrItems(cleanQuery),
+            this.getAuchanItems(cleanQuery),
+            this.getFozzyshopItems(cleanQuery),
+        ]).then((results) => {
+            puppeteer.closeBrowser();
+            return results.flat();
+        }).catch(err => console.log(err));
     },
 
     async getEpicentrItems(searchQuery) {
@@ -40,14 +41,12 @@ export const parserService = {
                 const image = $(card).find('.card__photo img').attr('src');
                 const name = $(card).find('.card__name .custom-link .nc').text();
                 const price = $(card).find('.card__price .card__price-row .card__price-actual').children().text();
-                const brand = $(card).find('.card__characteristics li').first().text();
                 const weight = $(card).find('.card__characteristics li').first().next().text();
 
                 const newItem = {
                     name: cleanString(name),
                     image,
                     price: getNumberFromString(price),
-                    brand: cleanString(brand.split(':')[1]),
                     weight: convertToKg(getNumberFromString(weight)),
                     site: epicentrName,
                 }
@@ -64,69 +63,21 @@ export const parserService = {
 
     async getAuchanItems(searchQuery) {
         try {
-            const pageContent = await puppeteer.getPageContent(AUCHAN + searchQuery);
-            const $ = cherio.load(pageContent);
-            const cardWrapper = $('.products-box__list .products-box__list-item');
-            const items = [];
-
-            if (!$(cardWrapper).length) {
-                return items;
-            }
-
-            $(cardWrapper).each( async (i, item) => {
-                const card = $(item).children();
-                const image = $(card).find('.product-tile__image .product-tile__image-i').attr('src');
-                const name = $(card).find('.product-tile__details .product-tile__title-wrapper span').text();
-                const price = $(card).find('.product-tile__details .product-tile__prices span').text();
-
-                const detailsLink = $(card).attr('href');
-                const { brand, weight } = await this.getAuchanItemDetails(detailsLink);
-
+            const data = await callApi(AUCHAN + searchQuery);
+            return data.results.reduce((prices, item) => {
                 const newItem = {
-                    name: cleanString(name),
-                    image,
-                    price: getNumberFromString(price),
-                    brand,
-                    weight,
+                    name: item.title,
+                    price: item.price / 100,
+                    image: item.img.s150x150,
+                    weight: Math.round(item.weight / 100) * 100,
                     site: auchanName,
                 }
-                
-                items = [ ...items, newItem ];
-            });
 
-            return items;
+                return [...prices, newItem];
+            }, []);
         } catch (error) {
             console.log(error.message);
             return [];
-        }
-    },
-
-    async getAuchanItemDetails(link) {
-        try {
-            const detailsContent = await puppeteer.getPageContent('https://' + auchanName + link);
-            const $ = cherio.load(detailsContent);
-            const detailsWrapper = $('.big-product-card__facts-list li');
-
-            if (!$(detailsWrapper).length) {
-                return {
-                    brand: 'Не відомий',
-                    weight: 0,
-                };
-            }
-
-            const brand = $(detailsWrapper).find(".BigProductCardTrademarkName").text();
-            const weight = $(detailsWrapper).find("div[data-marker='product_weight']").text();
-
-            return {
-                brand: cleanString(brand) || 'Не відомий',
-                weight: weight ? getWeightFromDiffValues(weight) : 0,
-            };
-        } catch (error) {
-            console.log(error.message);
-            return {
-                brand: 'Не відомий',
-                weight: 0,
-            };
         }
     },
     
@@ -146,16 +97,13 @@ export const parserService = {
                 const image = $(card).find('.thumbnail-container a img').attr('src');
                 const name = $(card).find('.product-title a').text();
                 const price = $(card).find('.product-price-and-shipping a span').attr('content');
-
-                const detailsLink = $(card).find('.product-title a').attr('href');
-                const { brand, weight } = await this.getFozzyshopItemDetails(detailsLink);
+                const weight = $(card).find('.product-reference a').first().text();
 
                 const newItem = {
                     name: cleanString(name),
                     image,
                     price: getNumberFromString(price),
-                    brand,
-                    weight,
+                    weight: getWeightFromDiffValues(weight),
                     site: fozzyshopName,
                 }
                 
@@ -166,35 +114,6 @@ export const parserService = {
         } catch (error) {
             console.log(error.message);
             return [];
-        }
-    },
-
-    async getFozzyshopItemDetails(link) {
-        try {
-            const detailsContent = await puppeteer.getPageContent(link);
-            const $ = cherio.load(detailsContent);
-            const detailsWrapper = $('.data-sheet');
-
-            if (!$(detailsWrapper).children().length) {
-                return {
-                    brand: 'Не відомий',
-                    weight: 0,
-                };
-            }
-
-            const brand = $(detailsWrapper).children('meta').attr('content');
-            const weight = $(detailsWrapper).last().text();
-
-            return {
-                brand: cleanString(brand) || 'Не відомий',
-                weight: weight ? getWeightFromDiffValues(weight) : 0,
-            };
-        } catch (error) {
-            console.log(error.message);
-            return {
-                brand: 'Не відомий',
-                weight: 0,
-            };
         }
     },
 }
