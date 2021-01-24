@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import exampleReducer from '../ExampleComponent/exampleReducer';
-import filterReducer from '../Filter/filterReducer';
+import searchData from '../SearchComponent/searchReducer';
+import filterData from '../Filter/filterReducer';
+import productsData from '../ProductCardsWrapper/productCardsReducer';
 
 const rootReducer = combineReducers({
-    exampleReducer,
-    filterReducer,
+    searchData,
+    filterData,
+    productsData,
 });
 
 export default rootReducer;
