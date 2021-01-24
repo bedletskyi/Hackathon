@@ -39,7 +39,6 @@ class ProductCardsWrapper extends PureComponent {
     };
 
     render() {
-        console.log(this.state.cardsColumns);
         return (
             <Segment raised className="cards-wrapper">
                 <div className="dropdown-wrapper">
@@ -48,8 +47,8 @@ class ProductCardsWrapper extends PureComponent {
                         fluid
                         selection
                         options={[
-                            { key: 'fromLower', value: 'fromLower', text: 'From the cheapest' },
-                            { key: 'fromExpensive', value: 'fromExpensive', text: 'From the most expensive' },
+                            { key: 'fromLower', value: 'fromLower', text: 'Від найдешевшого' },
+                            { key: 'fromExpensive', value: 'fromExpensive', text: 'Від найдорощого' },
                         ]}
                         defaultValue={'fromLower'}
                         className="order-dropdown"
@@ -70,7 +69,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    console.log(state);
     return {
         products: state.productsData.productsToShow || [],
     };

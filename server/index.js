@@ -12,15 +12,16 @@ app.use(bodyParser.json());
 
 app.get('/products', (req, res, next) => {
     const searchQuery = req.query.search || 'гречка';
+    console.log(searchQuery);
     parserService
         .getDataFromSites(searchQuery)
         .then((products) => {
-            console.log(products)
-            res.send({ value: products });
+            console.log('products')
+            res.send({ value: products.filter(product => product.weight) });
         })
         .catch((err) => {
-            console.log(err);
-            next(err);
+            console.error(err);
+            res.status(404).send(err);
         });
 });
 
