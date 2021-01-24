@@ -3,7 +3,6 @@ import { Button, Form, Item, Segment } from 'semantic-ui-react'
 import { searchAction } from "./exampleActions";
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
-import store from "../root/store";
 
 class ExampleComponent extends PureComponent{
     constructor(props){
