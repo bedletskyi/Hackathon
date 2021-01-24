@@ -3,7 +3,7 @@ import { Button, Form, Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import RangeSliderComponent from '../Shared/Slider';
-import { filterItems } from './filterActions';
+import { filterItems, setDefaultFilterOptions } from './filterActions';
 import './filter.css';
 
 class FilterComponent extends PureComponent {
@@ -11,20 +11,32 @@ class FilterComponent extends PureComponent {
         super(props);
         this.state = {
             minPrice: 0,
-            maxPrice: 2000,
-            selectedPriceRange: [0, 2000],
+            maxPrice: props.maxPrice,
+            selectedPriceRange: [0, props.maxPrice],
             minWeight: 0,
-            maxWeight: 2000,
-            selectedWeightRange: [0, 2000],
+            maxWeight: props.maxWeight,
+            selectedWeightRange: [0, props.maxWeight],
         };
     }
 
+    componentDidUpdate = () => {
+        if (this.state.maxPrice !== this.props.maxPrice || this.state.maxWeight !== this.props.maxWeight) {
+            this.setState({
+                maxPrice: this.props.maxPrice,
+                maxWeight: this.props.maxWeight,
+                selectedPriceRange: [0, this.props.maxPrice],
+                selectedWeightRange: [0, this.props.maxWeight],
+            });
+        }
+    };
+
     componentDidMount = () => {
+        this.props.setDefaultFilterOptions();
         this.props.filterItems({
             priceRange: this.state.selectedPriceRange,
             weightRange: this.state.selectedWeightRange,
         });
-    }
+    };
 
     handleRangeChange = (rangeName) => (values) => {
         this.setState({
@@ -62,7 +74,9 @@ class FilterComponent extends PureComponent {
         });
     };
 
-    setDefaultSetting = () => {};
+    setDefaultSetting = () => {
+        this.props.setDefaultFilterOptions();
+    };
 
     render() {
         return (
@@ -70,12 +84,12 @@ class FilterComponent extends PureComponent {
                 <Form>
                     <Form.Group unstackable widths={2}>
                         <Form.Input
-                            label="Min price"
+                            label="Мінімальна ціна"
                             value={this.state.selectedPriceRange[0]}
                             onChange={this.handleInputChange('selectedPriceRange', 0)}
                         />
                         <Form.Input
-                            label="Max price"
+                            label="Максимальна ціна"
                             value={this.state.selectedPriceRange[1]}
                             onChange={this.handleInputChange('selectedPriceRange', 1)}
                         />
@@ -90,12 +104,12 @@ class FilterComponent extends PureComponent {
                     </Form.Field>
                     <Form.Group unstackable widths={2}>
                         <Form.Input
-                            label="Min weight"
+                            label="Мінімальна вага"
                             value={this.state.selectedWeightRange[0]}
                             onChange={this.handleInputChange('selectedWeightRange', 0)}
                         />
                         <Form.Input
-                            label="Max weight"
+                            label="Максимальна вага"
                             value={this.state.selectedWeightRange[1]}
                             onChange={this.handleInputChange('selectedWeightRange', 1)}
                         />
@@ -121,11 +135,14 @@ class FilterComponent extends PureComponent {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ filterItems }, dispatch);
+    return bindActionCreators({ filterItems, setDefaultFilterOptions }, dispatch);
 }
 
 function mapStateToProps(state) {
-    return {};
+    return {
+        maxPrice: state.filterData.filterOptions.maxPrice,
+        maxWeight: state.filterData.filterOptions.maxWeight,
+    };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterComponent);

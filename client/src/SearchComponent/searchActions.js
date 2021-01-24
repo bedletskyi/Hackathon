@@ -1,3 +1,4 @@
+import { setDefaultFilterOptions } from '../Filter/filterActions';
 import { setProducts, setProductsToShow } from '../ProductCardsWrapper/productCardActions';
 
 export const SEARCH_ACTION = 'SEARCH_ACTION';
@@ -14,6 +15,7 @@ export function searchAction(query) {
 
                 dispatch(setProducts(value));
                 dispatch(setProductsToShow(value));
+                dispatch(setDefaultFilterOptions());
             } else {
                 debugger;
             }

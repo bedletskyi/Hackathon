@@ -34,7 +34,7 @@ export default class ProductCard extends PureComponent {
                         <div className={'card-additional-info'}>
                             <List>
                                 <List.Item>
-                                    <span>{this.props.weight + ' g'}</span>
+                                    <span>{this.props.weight + ' кг'}</span>
                                 </List.Item>
                                 <List.Item>
                                     <span>{this.props.brand}</span>
