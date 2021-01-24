@@ -8,7 +8,7 @@ const PriceForDaySchema = new mongoose.Schema({
     price:Number
 })
 const PriceForDay = mongoose.model('PriceForDay',PriceForDaySchema)
-const availablePointsOfSale = ['auchan','epicentrk','fozy']
+const availablePointsOfSale = ['auchan.zakaz.ua','epicentrk.ua','fozzyshop.ua']
 
 export const dbService = {
 
@@ -19,7 +19,6 @@ export const dbService = {
                 if(err) {
                     return [];
                 }
-                console.log(result)
                 return result
             })
         })
@@ -30,9 +29,9 @@ export const dbService = {
             return await PriceForDay.find({ pointOfSale }).sort({dayOfCapture:1}).exec();
         }
         const statistics ={};
-        for(pointOfSaleName of availablePointsOfSale){
+        for(const pointOfSaleName of availablePointsOfSale){
             const pointOfSaleStatistics = await PriceForDay.find({ pointOfSale: pointOfSaleName}).sort({dayOfCapture:1}).exec();
-            return Object.assign(statistics,{[pointOfSaleName]:pointOfSaleStatistics})
+            Object.assign(statistics,{[pointOfSaleName]:pointOfSaleStatistics})
         }
         return statistics;
 }
