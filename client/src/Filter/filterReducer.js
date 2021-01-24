@@ -5,7 +5,7 @@ const initialState = {
     itemsToShow: [],
 };
 
-export default function exampleReducer(state = initialState, action) {
+export default function filterReducer(state = initialState, action) {
     switch (action.type) {
         case SET_FILTERED_ITEMS:
             return { ...state, itemsToShow: action.filteredItems };
