@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import RangeSliderComponent from '../Shared/Slider';
 import { filterItems } from './filterActions';
+import './filter.css';
 
 class FilterComponent extends PureComponent {
     constructor(props) {
@@ -15,14 +16,28 @@ class FilterComponent extends PureComponent {
             minWeight: 0,
             maxWeight: 2000,
             selectedWeightRange: [0, 2000],
-            brands: new Set(['aaa', 'bbb']),
-            selectedBrands: new Set(['aaa', 'bbb']),
         };
     }
 
-    handleChange = (rangeName) => (values) => {
+    componentDidMount = () => {
+        this.props.filterItems({
+            priceRange: this.state.selectedPriceRange,
+            weightRange: this.state.selectedWeightRange,
+        });
+    }
+
+    handleRangeChange = (rangeName) => (values) => {
         this.setState({
             [rangeName]: values,
+        });
+    };
+
+    handleInputChange = (inputName, index) => (e, { value }) => {
+        const newValue = [...this.state[inputName]];
+        newValue[index] = value;
+
+        this.setState({
+            [inputName]: newValue,
         });
     };
 
@@ -40,21 +55,10 @@ class FilterComponent extends PureComponent {
         });
     };
 
-    getBrandCheckbox = (brandName) => {
-        return (
-            <Form.Checkbox
-                checked={Array.from(this.state.selectedBrands).includes(brandName)}
-                onChange={this.handleBrandCheckboxChanged(brandName)}
-                label={`${brandName}`}
-            />
-        );
-    };
-
     filter = () => {
         this.props.filterItems({
             priceRange: this.state.selectedPriceRange,
             weightRange: this.state.selectedWeightRange,
-            brands: this.state.selectedBrands,
         });
     };
 
@@ -62,36 +66,48 @@ class FilterComponent extends PureComponent {
 
     render() {
         return (
-            <Segment raised>
+            <Segment className={'filter-segment'} raised>
                 <Form>
                     <Form.Group unstackable widths={2}>
-                        <Form.Input label="Min price" value={this.state.selectedPriceRange[0]} />
-                        <Form.Input label="Max price" value={this.state.selectedPriceRange[1]} />
+                        <Form.Input
+                            label="Min price"
+                            value={this.state.selectedPriceRange[0]}
+                            onChange={this.handleInputChange('selectedPriceRange', 0)}
+                        />
+                        <Form.Input
+                            label="Max price"
+                            value={this.state.selectedPriceRange[1]}
+                            onChange={this.handleInputChange('selectedPriceRange', 1)}
+                        />
                     </Form.Group>
                     <Form.Field>
                         <RangeSliderComponent
                             minValue={this.state.minPrice}
                             maxValue={this.state.maxPrice}
                             values={this.state.selectedPriceRange}
-                            onChange={this.handleChange('selectedPriceRange')}
+                            onChange={this.handleRangeChange('selectedPriceRange')}
                         />
                     </Form.Field>
                     <Form.Group unstackable widths={2}>
-                        <Form.Input label="Min weight" value={this.state.selectedWeightRange[0]} />
-                        <Form.Input label="Max weight" value={this.state.selectedWeightRange[1]} />
+                        <Form.Input
+                            label="Min weight"
+                            value={this.state.selectedWeightRange[0]}
+                            onChange={this.handleInputChange('selectedWeightRange', 0)}
+                        />
+                        <Form.Input
+                            label="Max weight"
+                            value={this.state.selectedWeightRange[1]}
+                            onChange={this.handleInputChange('selectedWeightRange', 1)}
+                        />
                     </Form.Group>
                     <Form.Field>
                         <RangeSliderComponent
                             minValue={this.state.minWeight}
                             maxValue={this.state.maxWeight}
                             values={this.state.selectedWeightRange}
-                            onChange={this.handleChange('selectedWeightRange')}
+                            onChange={this.handleRangeChange('selectedWeightRange')}
                         />
                     </Form.Field>
-                    <Form.Group grouped>
-                        <label>Brands:</label>
-                        {Array.from(this.state.brands).map(this.getBrandCheckbox)}
-                    </Form.Group>
                     <Button onClick={this.filter} primary>
                         Filter
                     </Button>

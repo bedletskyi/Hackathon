@@ -1,0 +1,13 @@
+.search-box{
+    width: 100%;
+    text-align: left;
+}
+
+.field.search-input{
+    width: 100%;
+    margin: 7px 0 !important;
+}
+
+.ui.button.submit-search{
+    margin: 7px
+}

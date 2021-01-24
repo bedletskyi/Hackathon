@@ -9,7 +9,7 @@ export default class RangeSliderComponent extends PureComponent {
                     display: 'flex',
                     justifyContent: 'center',
                     flexWrap: 'wrap',
-                    margin: '2em',
+                    margin: '0.5em',
                 }}
             >
                 <Range

@@ -1,14 +1,9 @@
 import { SET_FILTERED_ITEMS } from './filterActions';
 
-const initialState = {
-    items: [],
-    itemsToShow: [],
-};
+const initialState = {};
 
-export default function filterReducer(state = initialState, action) {
+export default function filterData(state = initialState, action) {
     switch (action.type) {
-        case SET_FILTERED_ITEMS:
-            return { ...state, itemsToShow: action.filteredItems };
         default:
             return state;
     }
