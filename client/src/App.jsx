@@ -1,33 +1,63 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import ExampleComponent from './ExampleComponent/ExampleComponent';
+import SearchComponent from './SearchComponent/SearchComponent';
 import FilterComponent from './Filter/Filter';
-import Cards from './ProductCard/Cards';
+import ProductCardsWrapper from './ProductCardsWrapper/ProductCardsWrapper';
 import store from './root/store';
+import { Grid, Image } from 'semantic-ui-react';
 
-const cardsData=[{
-  name:'mem',
-  image:'https://i2.rozetka.ua/goods/20812039/asus_90mp0210_bpua00_images_20812039341.png',
-  brand:'Asus',
-  weight:100,
-  price:50,
-  site:'https://rozetka.com.ua/'
-},{
-  name:'mem',
-  image:'https://i8.rozetka.ua/goods/20652778/asus_90mp01m0_bpua00_images_20652778701.png',
-  brand:'Asus',
-  weight:100,
-  price:50,
-  site:'https://rozetka.com.ua/'
-}]
-export default class App extends React.Component{
-  render(){
-    return (
-      <Provider store={store}>
-        <ExampleComponent />
-        <FilterComponent />
-        <Cards cardsData={cardsData}/>
-      </Provider>
-    );
-  }
+export default class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { windowWidth: window.innerWidth };
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.handleResize);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize);
+    }
+
+    handleResize = (e) => {
+        this.setState({ windowWidth: window.innerWidth });
+    };
+
+    getMainContent = (windowWidth) => {
+        if (windowWidth < 992) {
+            return (
+                <Grid centered textAlign="left">
+                    <Grid.Row>
+                        <SearchComponent />
+                    </Grid.Row>
+                    <Grid.Row>
+                        <FilterComponent />
+                    </Grid.Row>
+                    <Grid.Row>
+                        <ProductCardsWrapper />
+                    </Grid.Row>
+                </Grid>
+            );
+        }
+        return (
+            <Grid centered>
+                <Grid.Row>
+                    <Grid.Column width={windowWidth > 1440 ? 14 : 16}>
+                        <SearchComponent />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Column width={windowWidth > 1440 ? 3 : 5}>
+                    <FilterComponent />
+                </Grid.Column>
+                <Grid.Column width={11}>
+                    <ProductCardsWrapper />
+                </Grid.Column>
+            </Grid>
+        );
+    };
+
+    render() {
+        return <Provider store={store}>{this.getMainContent(this.state.windowWidth)}</Provider>;
+    }
 }

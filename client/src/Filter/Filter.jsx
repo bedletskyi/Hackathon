@@ -3,26 +3,53 @@ import { Button, Form, Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import RangeSliderComponent from '../Shared/Slider';
-import { filterItems } from './filterActions';
+import { filterItems, setDefaultFilterOptions } from './filterActions';
+import './filter.css';
 
 class FilterComponent extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
             minPrice: 0,
-            maxPrice: 2000,
-            selectedPriceRange: [0, 2000],
+            maxPrice: props.maxPrice,
+            selectedPriceRange: [0, props.maxPrice],
             minWeight: 0,
-            maxWeight: 2000,
-            selectedWeightRange: [0, 2000],
-            brands: new Set(['aaa', 'bbb']),
-            selectedBrands: new Set(['aaa', 'bbb']),
+            maxWeight: props.maxWeight,
+            selectedWeightRange: [0, props.maxWeight],
         };
     }
 
-    handleChange = (rangeName) => (values) => {
+    componentDidUpdate = () => {
+        if (this.state.maxPrice !== this.props.maxPrice || this.state.maxWeight !== this.props.maxWeight) {
+            this.setState({
+                maxPrice: this.props.maxPrice,
+                maxWeight: this.props.maxWeight,
+                selectedPriceRange: [0, this.props.maxPrice],
+                selectedWeightRange: [0, this.props.maxWeight],
+            });
+        }
+    };
+
+    componentDidMount = () => {
+        this.props.setDefaultFilterOptions();
+        this.props.filterItems({
+            priceRange: this.state.selectedPriceRange,
+            weightRange: this.state.selectedWeightRange,
+        });
+    };
+
+    handleRangeChange = (rangeName) => (values) => {
         this.setState({
             [rangeName]: values,
+        });
+    };
+
+    handleInputChange = (inputName, index) => (e, { value }) => {
+        const newValue = [...this.state[inputName]];
+        newValue[index] = value;
+
+        this.setState({
+            [inputName]: newValue,
         });
     };
 
@@ -40,58 +67,61 @@ class FilterComponent extends PureComponent {
         });
     };
 
-    getBrandCheckbox = (brandName) => {
-        return (
-            <Form.Checkbox
-                checked={Array.from(this.state.selectedBrands).includes(brandName)}
-                onChange={this.handleBrandCheckboxChanged(brandName)}
-                label={`${brandName}`}
-            />
-        );
-    };
-
     filter = () => {
         this.props.filterItems({
             priceRange: this.state.selectedPriceRange,
             weightRange: this.state.selectedWeightRange,
-            brands: this.state.selectedBrands,
         });
     };
 
-    setDefaultSetting = () => {};
+    setDefaultSetting = () => {
+        this.props.setDefaultFilterOptions();
+    };
 
     render() {
         return (
-            <Segment raised>
+            <Segment className={'filter-segment'} raised>
                 <Form>
                     <Form.Group unstackable widths={2}>
-                        <Form.Input label="Min price" value={this.state.selectedPriceRange[0]} />
-                        <Form.Input label="Max price" value={this.state.selectedPriceRange[1]} />
+                        <Form.Input
+                            label="Мінімальна ціна"
+                            value={this.state.selectedPriceRange[0]}
+                            onChange={this.handleInputChange('selectedPriceRange', 0)}
+                        />
+                        <Form.Input
+                            label="Максимальна ціна"
+                            value={this.state.selectedPriceRange[1]}
+                            onChange={this.handleInputChange('selectedPriceRange', 1)}
+                        />
                     </Form.Group>
                     <Form.Field>
                         <RangeSliderComponent
                             minValue={this.state.minPrice}
                             maxValue={this.state.maxPrice}
                             values={this.state.selectedPriceRange}
-                            onChange={this.handleChange('selectedPriceRange')}
+                            onChange={this.handleRangeChange('selectedPriceRange')}
                         />
                     </Form.Field>
                     <Form.Group unstackable widths={2}>
-                        <Form.Input label="Min weight" value={this.state.selectedWeightRange[0]} />
-                        <Form.Input label="Max weight" value={this.state.selectedWeightRange[1]} />
+                        <Form.Input
+                            label="Мінімальна вага"
+                            value={this.state.selectedWeightRange[0]}
+                            onChange={this.handleInputChange('selectedWeightRange', 0)}
+                        />
+                        <Form.Input
+                            label="Максимальна вага"
+                            value={this.state.selectedWeightRange[1]}
+                            onChange={this.handleInputChange('selectedWeightRange', 1)}
+                        />
                     </Form.Group>
                     <Form.Field>
                         <RangeSliderComponent
                             minValue={this.state.minWeight}
                             maxValue={this.state.maxWeight}
                             values={this.state.selectedWeightRange}
-                            onChange={this.handleChange('selectedWeightRange')}
+                            onChange={this.handleRangeChange('selectedWeightRange')}
                         />
                     </Form.Field>
-                    <Form.Group grouped>
-                        <label>Brands:</label>
-                        {Array.from(this.state.brands).map(this.getBrandCheckbox)}
-                    </Form.Group>
                     <Button onClick={this.filter} primary>
                         Filter
                     </Button>
@@ -105,11 +135,14 @@ class FilterComponent extends PureComponent {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ filterItems }, dispatch);
+    return bindActionCreators({ filterItems, setDefaultFilterOptions }, dispatch);
 }
 
 function mapStateToProps(state) {
-    return {};
+    return {
+        maxPrice: state.filterData.filterOptions.maxPrice,
+        maxWeight: state.filterData.filterOptions.maxWeight,
+    };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterComponent);

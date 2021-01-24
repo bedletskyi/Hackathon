@@ -1,6 +1,6 @@
 .card-image{
     height: 180px;
-    width: 290px;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,4 +28,13 @@
 .card-additional-info{
     color: #797878;
     font-size: 12px;
+}
+
+.ui.card.card-box{
+    width: 100%;
+}
+
+.card-image .image img {
+    max-height: 170px;
+    max-width: 230px;
 }
