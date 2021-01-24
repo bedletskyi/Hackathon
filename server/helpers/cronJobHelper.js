@@ -5,37 +5,22 @@ const SELECTED_SEARCH_REQUEST = "крупа гречана";
 
 const addPriceInPointsOfSaleToStatisticsDb = () =>{
 
-    const epicentrItems = await this.getEpicentrItems(SELECTED_SEARCH_REQUEST);
-    const auchanItems = await this.getAuchanItems(SELECTED_SEARCH_REQUEST);
-    const fozzyshopItems = await this.getFozzyshopItems(SELECTED_SEARCH_REQUEST);
+    parserService.getTaggedDataFromSites(SELECTED_SEARCH_REQUEST,(data =>{
+        const dataConvertedToSavingFormat = Object.keys(data).map(site=>{
+            return{
+           pointOfSale:site,
+           dayOfCapture: new Date(),
+           price:getMinPricePerKilo(data[site])
+        }})
+        dbService.saveStatistics(dataConvertedToSavingFormat);
+    }))
+}
 
-    const epicentrMinPricePerKilo = epicentrItems
-        .map(dataFromSite => dataFromSite.price/dataFromSite.weigth).min();
-    const auchanMinPricePerKilo = auchanItems
-        .map(dataFromSite => dataFromSite.price/dataFromSite.weigth).min();
-    const fozzyMinPricePerKilo = fozzyshopItems
-        .map(dataFromSite => dataFromSite.price/dataFromSite.weigth).min();
-
-    const dataConvertedToSavingFormat = [
-        {
-            pointOfSale:'epicentrk.ua',
-            dayOfCapture: new Date(),
-            price:epicentrMinPricePerKilo
-        },
-        {
-            pointOfSale:'auchan.zakaz.ua',
-            dayOfCapture: new Date(),
-            price:auchanMinPricePerKilo
-        },
-        {
-            pointOfSale:'fozzyshop.ua',
-            dayOfCapture: new Date(),
-            price:fozzyMinPricePerKilo
-        }
-    ]
-
-    dbService.saveStatistics(dataConvertedToSavingFormat);
-console.log('seeding')
+const getMinPricePerKilo = (items) =>{
+    const pricesPerKilo = items.map(item => {
+        return item.price/item.weight
+    })
+    return Math.min(...pricesPerKilo)
 }
 
 module.exports = {

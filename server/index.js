@@ -31,6 +31,6 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 })
 
-cron.schedule("00 30 20 * * *",()=>{
-    addPriceInPointsOfSaleToStatisticsDb();
+cron.schedule("00 * 00 * * *",()=>{
+     addPriceInPointsOfSaleToStatisticsDb();
 })

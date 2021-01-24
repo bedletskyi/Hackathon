@@ -25,6 +25,20 @@ export const parserService = {
         }).catch(err => console.log(err));
     },
 
+    async getTaggedDataFromSites(searchQuery, callback) {
+        const epicentrkData = await  parserService.getEpicentrItems(searchQuery);
+        const auchanData = await  parserService.getAuchanItems(searchQuery);
+        const fozzyData = await  parserService.getFozzyshopItems(searchQuery);
+
+        const dataFromSites ={
+            "epicentrk.ua":epicentrkData,
+            "auchan.zakaz.ua":auchanData,
+            "fozzyshop.ua":fozzyData,
+        }
+        
+        callback(dataFromSites);
+    },
+
     async getEpicentrItems(searchQuery) {
         try {
             const pageContent = await puppeteer.getPageContent(EPICENTR + searchQuery);
@@ -69,7 +83,7 @@ export const parserService = {
                     name: item.title,
                     price: item.price / 100,
                     image: item.img.s150x150,
-                    weight: Math.round(item.weight / 100) * 100,
+                    weight: item.unit === 'kg' ? item.bundle : Math.round(item.weight / 100)/10,
                     site: auchanName,
                 }
 
