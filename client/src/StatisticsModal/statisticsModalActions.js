@@ -1,5 +1,4 @@
 export const TOGGLE_STATISTICS_MODAL = 'TOGGLE_STATISTICS_MODAL';
-export const TOGGLE_STATISTICS_SPINNER = 'TOGGLE_STATISTICS_SPINNER';
 export const SET_STATISTICS = 'SET_STATISTICS';
 
 export const toggleStatisticsModal = () => {
@@ -9,19 +8,15 @@ export const toggleStatisticsModal = () => {
     }
 }
 
-export const loadStatistics = () => {
+export const loadStatistics = (period) => {
     return (dispatch) => {
         const url = new URL('http://localhost:5000/stats');
-        dispatch(toggleStatisticsSpinner())
+        const params = { search:period }
+        url.search = new URLSearchParams(params).toString();
         fetch(url).then(async (response) => {
             if (response.ok) {
                 const { statistics } = await response.json();
-                console.log(statistics)
                 dispatch(setStatistics(statistics));
-                dispatch(toggleStatisticsSpinner())
-            } else {
-                debugger;
-                dispatch(toggleStatisticsSpinner())
             }
         });
     }
@@ -32,10 +27,3 @@ export const setStatistics = (statistics) =>
         type: SET_STATISTICS,
         statistics
     })
-
-export const toggleStatisticsSpinner = () => {
-    return {
-        type: TOGGLE_STATISTICS_SPINNER,
-
-    }
-}

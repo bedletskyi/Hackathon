@@ -1,6 +1,16 @@
 .actions-wrapper{
     display:flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+}
+.targets-selector-wrapper{
+    display:flex;
+    justify-content: end;
+    align-items: center;
+}
+.period-selector-wrapper{
+    display:flex;
+    justify-content: start;
     align-items: center;
 }
 .chart-wrapper{

@@ -15,7 +15,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('/stats', (req, res) => {
-  dbService.getStatistics().then(result =>{
+  const period = req.query.search || 7;
+  dbService.getStatistics(period).then(result =>{
     res.send({statistics:result});
   }).catch(err=>{
     res.status(500).send(`Can not get statistics\n\n${err}`);
@@ -39,7 +40,7 @@ app.get('/products', (req, res, next) => {
 });
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+    console.log(`\nBuckwheat app started at http://localhost:${port}\n`);
 });
 
 fillStatistics()

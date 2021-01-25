@@ -31,7 +31,7 @@ export const parserService = {
         const fozzyData = await  parserService.getFozzyshopItems(searchQuery);
 
         const dataFromSites ={
-            auchnPrice:auchanData,
+            auchanPrice:auchanData,
             epicentrPrice:epicentrkData,
             fozzyPrice:fozzyData,
         }

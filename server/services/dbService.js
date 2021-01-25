@@ -5,7 +5,7 @@ mongoose.connect(MONGODB_URI,{useNewUrlParser: true, useUnifiedTopology: true})
 
 const StatisticsForDaySchema = new mongoose.Schema({
     dayOfCapture: Date,
-    auchnPrice:Number,
+    auchanPrice:Number,
     epicentrPrice:Number,
     fozzyPrice:Number,
 })
@@ -23,8 +23,9 @@ export const dbService = {
         })
     },
 
-    async getStatistics(){
-        const statistics = await StatisticsForDay.find().sort({dayOfCapture:1}).exec();
+    async getStatistics(period){
+        //StatisticsForDay.remove({},()=>{})
+        const statistics = await StatisticsForDay.find({dayOfCapture: { $gte: moment(new Date()).subtract(period, 'days') }} ).sort({dayOfCapture:1}).exec();
         return statistics.map(statisticsMember => {
             return {...statisticsMember._doc, "dayOfCapture":moment(statisticsMember.dayOfCapture).format("DD/MM/YYYY")}
         })
