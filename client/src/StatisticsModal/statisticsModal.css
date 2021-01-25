@@ -1,0 +1,23 @@
+.actions-wrapper{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.targets-selector-wrapper{
+    display:flex;
+    justify-content: end;
+    align-items: center;
+}
+.period-selector-wrapper{
+    display:flex;
+    justify-content: start;
+    align-items: center;
+}
+.chart-wrapper{
+    display:flex;
+    justify-content: center;
+}
+.checkbox{
+    margin-left: 10px;
+    margin-right: 10px;
+}
