@@ -1,0 +1,52 @@
+{
+    "statistics":[
+        {
+            "dayOfCapture": "2021-01-18T00:00:00.912Z",
+            "auchnPrice":43,
+            "epicentrPrice":39,
+            "fozzyPrice":45
+        },
+        {
+            "dayOfCapture": "2021-01-19T00:00:00.912Z",
+            "auchnPrice":43,
+            "epicentrPrice":39,
+            "fozzyPrice":45
+        },
+        {
+            "dayOfCapture": "2021-01-20T00:00:00.912Z",
+            "auchnPrice":40,
+            "epicentrPrice":41,
+            "fozzyPrice":45
+        },
+        {
+            "dayOfCapture": "2021-01-21T00:00:00.912Z",
+            "auchnPrice":41,
+            "epicentrPrice":41,
+            "fozzyPrice":43
+        },
+        {
+            "dayOfCapture": "2021-01-22T00:00:00.912Z",
+            "auchnPrice":43.2,
+            "epicentrPrice":42.5,
+            "fozzyPrice":43
+        },
+        {
+            "dayOfCapture": "2021-01-23T00:00:00.912Z",
+            "auchnPrice":43.2,
+            "epicentrPrice":42.5,
+            "fozzyPrice":44
+        },
+        {
+            "dayOfCapture": "2021-01-24T00:00:00.912Z",
+            "auchnPrice":41,
+            "epicentrPrice":44,
+            "fozzyPrice":39
+        },
+        {
+            "dayOfCapture": "2021-01-25T00:00:00.912Z",
+            "auchnPrice":43,
+            "epicentrPrice":45,
+            "fozzyPrice":39.8
+        }
+    ]
+}
