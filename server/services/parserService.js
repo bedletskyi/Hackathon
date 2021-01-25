@@ -10,10 +10,11 @@ const epicentrName = 'epicentrk.ua';
 const auchanName = 'auchan.zakaz.ua';
 const fozzyshopName = 'fozzyshop.ua';
 
-const puppeteer = new PuppeteerHandler();
+let puppeteer = null;
 
 export const parserService = {
     async getDataFromSites(searchQuery) {
+        puppeteer = new PuppeteerHandler();
         const cleanQuery = cleanString(searchQuery);
         return Promise.all([
             this.getEpicentrItems(cleanQuery),
@@ -22,6 +23,7 @@ export const parserService = {
         ])
             .then((results) => {
                 puppeteer.closeBrowser();
+                puppeteer = null;
                 return results.flat();
             })
             .catch((err) => console.log(err));

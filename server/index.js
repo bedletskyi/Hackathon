@@ -34,10 +34,7 @@ app.get('/products', (req, res, next) => {
         .then((products) => {
             console.log('products');
             res.send({
-                value: products
-                    .filter((product) => product.weight)
-                    .map(console.log)
-                    .map((product) => ({ ...product, name: product.name.replace(/\n/g, '') })),
+                value: products.filter((product) => product.weight),
             });
         })
         .catch((err) => {
