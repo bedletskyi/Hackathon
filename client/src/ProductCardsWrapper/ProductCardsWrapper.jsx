@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './productCardsWrapper.css';
 import ProductCard from '../ProductCard/ProductCard';
+import StatisticsModal from '../StatisticsModal/statisticsModal';
+import { toggleStatisticsModal } from '../StatisticsModal/statisticsModalActions';
 
 class ProductCardsWrapper extends PureComponent {
     constructor(props) {
@@ -38,34 +40,48 @@ class ProductCardsWrapper extends PureComponent {
         );
     };
 
+    showStatistics = () => {
+        this.props.toggleStatisticsModal()
+    }
+
     render() {
         return (
             <Segment raised className="cards-wrapper">
-                <div className="dropdown-wrapper">
-                    <Dropdown
-                        placeholder="Sort by"
-                        fluid
-                        selection
-                        options={[
-                            { key: 'fromLower', value: 'fromLower', text: 'Від найдешевшого' },
-                            { key: 'fromExpensive', value: 'fromExpensive', text: 'Від найдорощого' },
-                        ]}
-                        defaultValue={'fromLower'}
-                        className="order-dropdown"
-                    />
+                <div className="card-list-header">
+                    <div className="dropdown-wrapper">
+                      <Dropdown
+                            placeholder="Sort by"
+                          fluid
+                            selection
+                          options={[
+                              { key: 'fromLower', value: 'fromLower', text: 'Від найдешевшого' },
+                               { key: 'fromExpensive', value: 'fromExpensive', text: 'Від найдорожчого' },
+                          ]}
+                          defaultValue={'fromLower'}
+                          className="order-dropdown"
+                        />
+                    </div>
+                    <div className="statistics-wrapper" onClick={this.showStatistics}>
+                        <Icon name="chart line" color="blue" size="large"> </Icon>
+                        <p>Переглянути графік зміни цін</p>
+                    </div>
+                    
                 </div>
+
+                
                 <div ref={this.cardsRef}>
                     <Grid textAlign='left' doubling columns={this.state.cardsColumns}>
                         {this.props.products.map(this.getCard)}
                     </Grid>
                 </div>
+                <StatisticsModal></StatisticsModal>
             </Segment>
         );
     }
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({}, dispatch);
+    return bindActionCreators({toggleStatisticsModal}, dispatch);
 }
 
 function mapStateToProps(state) {
