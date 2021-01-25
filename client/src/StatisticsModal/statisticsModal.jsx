@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Modal, Select, Checkbox } from 'semantic-ui-react';
+import { Modal, Select, Checkbox, Icon, Popup } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './statisticsModal.css';
@@ -45,9 +45,9 @@ class StatisticsModal extends PureComponent {
                 <YAxis/>
                 <Legend/>
                 <Tooltip />
-                    {this.state.auchanLineIsVisible && <Line type="monotone" dataKey="auchanPrice" stroke="#bd372b" name="auchan.zakaz.ua" unit=" грн"/>}
-                    {this.state.epicentrLineIsVisible &&  <Line type="monotone" dataKey="epicentrPrice" stroke="#5187cd" name="epicentrk.ua" unit=" грн"/>}
-                    {this.state.fozzyLineIsVisible &&  <Line type="monotone" dataKey="fozzyPrice" stroke="#903ec5" name="fozzyshop.ua" unit=" грн"/>}
+                    {this.state.auchanLineIsVisible && <Line type="monotone" dataKey="auchanPrice" stroke="#bd372b" name="auchan.zakaz.ua" unit=" грн/кг"/>}
+                    {this.state.epicentrLineIsVisible &&  <Line type="monotone" dataKey="epicentrPrice" stroke="#5187cd" name="epicentrk.ua" unit=" грн/кг"/>}
+                    {this.state.fozzyLineIsVisible &&  <Line type="monotone" dataKey="fozzyPrice" stroke="#903ec5" name="fozzyshop.ua" unit=" грн/кг"/>}
                 </LineChart> 
                 
             </div>
@@ -58,10 +58,11 @@ class StatisticsModal extends PureComponent {
     render() {
         return (
             <Modal
-                dimmer={"blurring"}
                 onClose={() => this.props.toggleStatisticsModal()}
                 open={this.props.showStatisticsModal}>
-                <Modal.Header>Графік зміни цін на товар "крупа гречана"</Modal.Header>
+                <Modal.Header>Графік зміни цін на товар за пошуковим запитом "крупа гречана" 
+                    <Popup content={`Графік створений на основі значень мінімальної ціни за 1 кілограм гречки в певному магазині на певну дату. Мінімальна ціна в магазині обирається з цін товарів, що з'вляються в пошуковій видачі за запитом "крупа гречана". Перед вбором ціни всіх знайдених товарів приводяться до форми грн/кг.`}  position='bottom left' trigger={<Icon color={"blue"} name='question circle' size="small" />} />
+                </Modal.Header>
                 <Modal.Content>
                     {this.getModalContent()}
                 </Modal.Content>
