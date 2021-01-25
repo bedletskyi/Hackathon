@@ -23,7 +23,13 @@ export const setSortSettings = (sortStrategy = FROM_LOWER_SORT_STRATEGY) => {
     return (dispatch, getStore) => {
         const store = getStore();
 
-        const sortedProducts = store.productsData.productsToShow.sort((product) => product.price);
+        const sortedProducts = store.productsData.productsToShow.sort((product1, product2) => {
+            if (sortStrategy === FROM_LOWER_SORT_STRATEGY) {
+                return product1.price - product2.price;
+            }
+
+            return product2.price - product1.price;
+        });
 
         dispatch({
             type: SET_SORT_SETTINGS,
@@ -37,13 +43,13 @@ export const setSortSettings = (sortStrategy = FROM_LOWER_SORT_STRATEGY) => {
 export const startLoading = () => {
     return {
         type: SET_LOADING_STATE,
-        loading: true
-    }
-}
+        loading: true,
+    };
+};
 
 export const stopLoading = () => {
     return {
         type: SET_LOADING_STATE,
-        loading: false
-    }
-}
+        loading: false,
+    };
+};
