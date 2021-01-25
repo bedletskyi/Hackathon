@@ -9,8 +9,8 @@ export function filterItems({ priceRange, weightRange }) {
             return (
                 priceRange[0] <= item.price &&
                 priceRange[1] >= item.price &&
-                weightRange[0] <= item.weight &&
-                weightRange[1] >= item.weight
+                weightRange[0] <= item.weight * 1000 &&
+                weightRange[1] >= item.weight * 1000
             );
         });
 
@@ -21,8 +21,11 @@ export function filterItems({ priceRange, weightRange }) {
 export function setDefaultFilterOptions() {
     return (dispatch, getStore) => {
         const store = getStore();
-        const maxPrice = Math.max(...store.productsData.products.map((product) => product.price));
-        const maxWeight = Math.max(...store.productsData.products.map((product) => product.weight));
+        const maxProductPrice = Math.max(...store.productsData.products.map((product) => product.price));
+        const maxProductWeight = Math.max(...store.productsData.products.map((product) => product.weight * 1000));
+
+        const maxPrice = maxProductPrice < 0 ? 1000 : maxProductPrice;
+        const maxWeight = maxProductWeight < 0 ? 1000 : maxProductWeight;
 
         dispatch({
             type: SET_FILTER_OPTIONS,
@@ -31,5 +34,11 @@ export function setDefaultFilterOptions() {
                 maxWeight,
             },
         });
+        dispatch(
+            filterItems({
+                priceRange: [0, maxPrice],
+                weightRange: [0, maxWeight],
+            })
+        );
     };
 }

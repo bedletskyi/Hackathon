@@ -19,23 +19,25 @@ export const parserService = {
             this.getEpicentrItems(cleanQuery),
             this.getAuchanItems(cleanQuery),
             this.getFozzyshopItems(cleanQuery),
-        ]).then((results) => {
-            puppeteer.closeBrowser();
-            return results.flat();
-        }).catch(err => console.log(err));
+        ])
+            .then((results) => {
+                puppeteer.closeBrowser();
+                return results.flat();
+            })
+            .catch((err) => console.log(err));
     },
 
     async getTaggedDataFromSites(searchQuery, callback) {
-        const epicentrkData = await  parserService.getEpicentrItems(searchQuery);
-        const auchanData = await  parserService.getAuchanItems(searchQuery);
-        const fozzyData = await  parserService.getFozzyshopItems(searchQuery);
+        const epicentrkData = await parserService.getEpicentrItems(searchQuery);
+        const auchanData = await parserService.getAuchanItems(searchQuery);
+        const fozzyData = await parserService.getFozzyshopItems(searchQuery);
 
-        const dataFromSites ={
-            "epicentrk.ua":epicentrkData,
-            "auchan.zakaz.ua":auchanData,
-            "fozzyshop.ua":fozzyData,
-        }
-        
+        const dataFromSites = {
+            'epicentrk.ua': epicentrkData,
+            'auchan.zakaz.ua': auchanData,
+            'fozzyshop.ua': fozzyData,
+        };
+
         callback(dataFromSites);
     },
 
@@ -63,9 +65,9 @@ export const parserService = {
                     price: getNumberFromString(price),
                     weight: convertToKg(getNumberFromString(weight)),
                     site: epicentrName,
-                }
-                
-                items = [ ...items, newItem ];
+                };
+
+                items = [...items, newItem];
             });
 
             return items;
@@ -83,9 +85,9 @@ export const parserService = {
                     name: item.title,
                     price: item.price / 100,
                     image: item.img.s150x150,
-                    weight: item.unit === 'kg' ? item.bundle : Math.round(item.weight / 100)/10,
+                    weight: item.unit === 'kg' ? item.bundle : Math.round(item.weight / 100) / 10,
                     site: auchanName,
-                }
+                };
 
                 return [...prices, newItem];
             }, []);
@@ -94,7 +96,7 @@ export const parserService = {
             return [];
         }
     },
-    
+
     async getFozzyshopItems(searchQuery) {
         try {
             const pageContent = await puppeteer.getPageContent(FOZZYSHOP + searchQuery);
@@ -106,7 +108,7 @@ export const parserService = {
                 return items;
             }
 
-            $(cardWrapper).each( async (i, item) => {
+            $(cardWrapper).each(async (i, item) => {
                 const card = $(item).children();
                 const image = $(card).find('.thumbnail-container a img').attr('src');
                 const name = $(card).find('.product-title a').text();
@@ -119,9 +121,9 @@ export const parserService = {
                     price: getNumberFromString(price),
                     weight: getWeightFromDiffValues(weight),
                     site: fozzyshopName,
-                }
-                
-                items = [ ...items, newItem ];
+                };
+
+                items = [...items, newItem];
             });
 
             return items;
@@ -130,9 +132,9 @@ export const parserService = {
             return [];
         }
     },
-}
+};
 
-const getWeightFromDiffValues = value => {
+const getWeightFromDiffValues = (value) => {
     const isKg = value.includes('кг');
     const haveParts = value.includes('*');
 
@@ -145,15 +147,15 @@ const getWeightFromDiffValues = value => {
         return convertToKg(grValue);
     }
 
-    const parsedNumber = getNumberFromString(value)
+    const parsedNumber = getNumberFromString(value);
     if (isKg) {
         return parsedNumber;
     }
 
     return convertToKg(parsedNumber);
-}
+};
 
-const getNumberFromString = string => {
+const getNumberFromString = (string) => {
     const parts = string.match(/\d+/g);
 
     if (!parts) {
@@ -165,10 +167,10 @@ const getNumberFromString = string => {
     }
 
     return Number(parts[0]);
-}
+};
 
-const cleanString = string => {
+const cleanString = (string) => {
     return string ? string.replace('\\n', '').trim() : '';
-}
+};
 
-const convertToKg = grValue => grValue / 1000;
+const convertToKg = (grValue) => grValue / 1000;
