@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const {dbService} = require('./services/dbService');
 const {addPriceInPointsOfSaleToStatisticsDb} = require('./helpers/cronJobHelper');
+const {fillStatistics} = require('./helpers/statisticsFiller');
 const cron = require('node-cron')
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -23,7 +24,7 @@ app.get('/stats', (req, res) => {
 
 
 app.get('/products', (req, res, next) => {
-    const searchQuery = req.query.search || 'гречка';
+    const searchQuery = req.query.search || 'крупа гречана';
     console.log(searchQuery);
     parserService
         .getDataFromSites(searchQuery)
@@ -40,6 +41,8 @@ app.get('/products', (req, res, next) => {
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
+
+fillStatistics()
 
 cron.schedule("00 00 00 * * *",()=>{
      addPriceInPointsOfSaleToStatisticsDb();

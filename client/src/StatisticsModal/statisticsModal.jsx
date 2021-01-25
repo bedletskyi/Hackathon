@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
-import { Modal, Dimmer, Loader, Checkbox } from 'semantic-ui-react';
+import { Modal, Dimmer, Loader, Checkbox,Label } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './statisticsModal.css';
-import { toggleStatisticsModal } from './statisticsModalActions';
-import { LineChart, Line } from 'recharts';
-const data = [{name: 'Page A', auchan: 400, epicentr: 2400, fozzy: 2400},{name: 'Page B', auchan: 300, epicentr: 600, fozzy: 2400}];
+import { toggleStatisticsModal, loadStatistics } from './statisticsModalActions';
+import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 
 class StatisticsModal extends PureComponent {
     constructor(props) {
@@ -15,6 +14,7 @@ class StatisticsModal extends PureComponent {
             epicentrLineIsVisible : true,
             fozzyLineIsVisible : true
         }
+        this.props.loadStatistics()
     }
     
     changeTargetChartVisibility = (data) =>{
@@ -31,10 +31,13 @@ class StatisticsModal extends PureComponent {
         }
         return (
             <div className="chart-wrapper">
-                <LineChart width={400} height={400} data={data}>
-                    {this.state.auchanLineIsVisible && <Line type="monotone" dataKey="auchan" stroke="#d32d41" />}
-                    {this.state.epicentrLineIsVisible &&  <Line type="monotone" dataKey="epicentr" stroke="#8884d8" />}
-                    {this.state.fozzyLineIsVisible &&  <Line type="monotone" dataKey="fozzy" stroke="#6ab187" />}
+                <LineChart width={600} height={400} data={this.props.statistics}>
+                <XAxis dataKey="dayOfCapture" />
+                <YAxis/>
+                <Tooltip />
+                    {this.state.auchanLineIsVisible && <Line type="monotone" dataKey="auchnPrice" stroke="#bd372b" />}
+                    {this.state.epicentrLineIsVisible &&  <Line type="monotone" dataKey="epicentrPrice" stroke="#5187cd" />}
+                    {this.state.fozzyLineIsVisible &&  <Line type="monotone" dataKey="fozzyPrice" stroke="#903ec5" />}
                 </LineChart> 
             </div>
 
@@ -53,9 +56,18 @@ class StatisticsModal extends PureComponent {
                 </Modal.Content>
                 <Modal.Actions>
                     <div className="actions-wrapper">
-                        <Checkbox toggle checked={this.state.auchanLineIsVisible} value="auchanLineIsVisible"  label='Ашан' onChange={(event, data) =>this.changeTargetChartVisibility(data)} />
-                        <Checkbox toggle checked={this.state.epicentrLineIsVisible} value="epicentrLineIsVisible" label='Епіцентр' onChange={(event, data) =>this.changeTargetChartVisibility(data)} className=".checkbox" />
-                        <Checkbox toggle checked={this.state.fozzyLineIsVisible} value="fozzyLineIsVisible" label='Фозі' onChange={(event, data) =>this.changeTargetChartVisibility(data)} className=".checkbox" />
+                        <Checkbox checked={this.state.auchanLineIsVisible} value="auchanLineIsVisible" onChange={(event, data) =>this.changeTargetChartVisibility(data)} />
+                        <Label color={"red"} tag>
+                            Ашан
+                        </Label>
+                        <Checkbox checked={this.state.epicentrLineIsVisible} value="epicentrLineIsVisible" onChange={(event, data) =>this.changeTargetChartVisibility(data)} className=".checkbox" />
+                        <Label color={"blue"} tag>
+                            Епіцентр
+                        </Label>
+                        <Checkbox checked={this.state.fozzyLineIsVisible} value="fozzyLineIsVisible" onChange={(event, data) =>this.changeTargetChartVisibility(data)} className=".checkbox" />
+                        <Label color={"purple"} tag>
+                            Фозі
+                        </Label>
                     </div>
                 </Modal.Actions>
             </Modal>
@@ -64,13 +76,14 @@ class StatisticsModal extends PureComponent {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({toggleStatisticsModal}, dispatch);
+    return bindActionCreators({toggleStatisticsModal, loadStatistics}, dispatch);
 }
 
 function mapStateToProps(state) {
     return {
         showStatisticsModal: state.statisticsData.showStatisticsModal,
-        statisticsIsLoading: state.statisticsData.statisticsIsLoading
+        statisticsIsLoading: state.statisticsData.statisticsIsLoading,
+        statistics: state.statisticsData.statistics
     };
 }
 

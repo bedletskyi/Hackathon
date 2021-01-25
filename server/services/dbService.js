@@ -17,7 +17,7 @@ export const dbService = {
         const statisticsInstance = new StatisticsForDay(statistics);
         statisticsInstance.save((err,result)=>{
             if(err) {
-                return [];
+                throw new Error(err.message)
             }
             return result
         })

@@ -1,6 +1,7 @@
 .actions-wrapper{
     display:flex;
     justify-content: center;
+    align-items: center;
 }
 .chart-wrapper{
     display:flex;
@@ -8,4 +9,5 @@
 }
 .checkbox{
     margin-left: 10px;
+    margin-right: 10px;
 }
