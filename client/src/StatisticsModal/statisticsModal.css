@@ -1,0 +1,11 @@
+.actions-wrapper{
+    display:flex;
+    justify-content: center;
+}
+.chart-wrapper{
+    display:flex;
+    justify-content: center;
+}
+.checkbox{
+    margin-left: 10px;
+}

@@ -2,7 +2,7 @@ import {TOGGLE_STATISTICS_MODAL, TOGGLE_STATISTICS_SPINNER } from './statisticsM
 
 const initialState = {
     showStatisticsModal: false,
-    statisticsIsLoading: true
+    statisticsIsLoading: false
 };
 
 export default function productsData(state = initialState, action) {

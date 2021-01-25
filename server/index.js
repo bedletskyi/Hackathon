@@ -43,6 +43,6 @@ app.listen(port, () => {
 });
 
 
-cron.schedule("00 * 00 * * *",()=>{
+cron.schedule("00 00 00 * * *",()=>{
      addPriceInPointsOfSaleToStatisticsDb();
 })
