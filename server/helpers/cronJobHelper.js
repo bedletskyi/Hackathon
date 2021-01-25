@@ -6,13 +6,11 @@ const SELECTED_SEARCH_REQUEST = "крупа гречана";
 const addPriceInPointsOfSaleToStatisticsDb = () =>{
 
     parserService.getTaggedDataFromSites(SELECTED_SEARCH_REQUEST,(data =>{
-        const dataConvertedToSavingFormat = Object.keys(data).map(site=>{
-            return{
-           pointOfSale:site,
-           dayOfCapture: new Date(),
-           price:getMinPricePerKilo(data[site])
-        }})
-        dbService.saveStatistics(dataConvertedToSavingFormat);
+        const dataConvertedToSavingFormat = 
+            Object.keys(data)
+            .reduce((statistics, site)=>({...statistics,[site]:getMinPricePerKilo(data[site])})
+           ,{dayOfCapture: new Date()})
+           dbService.saveStatistics(dataConvertedToSavingFormat);
     }))
 }
 
@@ -24,5 +22,5 @@ const getMinPricePerKilo = (items) =>{
 }
 
 module.exports = {
-addPriceInPointsOfSaleToStatisticsDb
+    addPriceInPointsOfSaleToStatisticsDb
 }
