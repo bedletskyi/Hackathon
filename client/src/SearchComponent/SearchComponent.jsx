@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './search.css';
 
-class ExampleComponent extends PureComponent {
+class SearchComponent extends PureComponent {
     constructor(props) {
         super(props);
     }
@@ -15,7 +15,7 @@ class ExampleComponent extends PureComponent {
     };
 
     onSearchSubmitted = () => {
-        this.props.searchAction(this.state.searchValue);
+        this.props.searchAction(this.props.query);
     };
 
     render() {
@@ -55,4 +55,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExampleComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchComponent);

@@ -1,9 +1,11 @@
+import { searchAction } from '../SearchComponent/searchActions';
 import { FROM_LOWER_SORT_STRATEGY } from './sortStrategies';
 
 export const SET_PRODUCTS_TO_SHOW = 'SET_PRODUCTS_TO_SHOW';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 export const SET_SORT_SETTINGS = 'SET_SORT_SETTINGS';
 export const SET_LOADING_STATE = 'SET_LOADING_STATE';
+export const INITIAL_SEARCH_CALLED = 'INITIAL_SEARCH_CALLED';
 
 export const setProductsToShow = (products = []) => {
     return {
@@ -51,5 +53,19 @@ export const stopLoading = () => {
     return {
         type: SET_LOADING_STATE,
         loading: false,
+    };
+};
+
+export const makeInitialSearch = () => {
+    return (dispatch, getStore) => {
+        const store = getStore();
+
+        if (!store.productsData.initialSearchCalled) {
+            dispatch(searchAction('Гречана крупа'));
+
+            dispatch({
+                type: INITIAL_SEARCH_CALLED,
+            });
+        }
     };
 };

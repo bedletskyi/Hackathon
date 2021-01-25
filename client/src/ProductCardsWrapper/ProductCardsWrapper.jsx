@@ -7,8 +7,7 @@ import ProductCard from '../ProductCard/ProductCard';
 import StatisticsModal from '../StatisticsModal/statisticsModal';
 import { toggleStatisticsModal } from '../StatisticsModal/statisticsModalActions';
 import { FROM_EXPENSIVE_SORT_STRATEGY, FROM_LOWER_SORT_STRATEGY } from './sortStrategies';
-import { setSortSettings } from './productCardActions';
-import { searchAction } from '../SearchComponent/searchActions';
+import { setSortSettings, makeInitialSearch } from './productCardActions';
 import EmptyProductCard from '../ProductCard/EmptyCard';
 
 class ProductCardsWrapper extends PureComponent {
@@ -28,7 +27,7 @@ class ProductCardsWrapper extends PureComponent {
     };
 
     componentDidMount() {
-        this.props.searchAction('Гречана крупа');
+        this.props.makeInitialSearch();
         this.onWindowResize();
         window.addEventListener('resize', this.onWindowResize);
     }
@@ -116,7 +115,7 @@ class ProductCardsWrapper extends PureComponent {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ toggleStatisticsModal, setSortSettings, searchAction }, dispatch);
+    return bindActionCreators({ toggleStatisticsModal, setSortSettings, makeInitialSearch }, dispatch);
 }
 
 function mapStateToProps(state) {
