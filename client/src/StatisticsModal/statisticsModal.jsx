@@ -31,11 +31,11 @@ class StatisticsModal extends PureComponent {
         }
         return (
             <div className="chart-wrapper">
-                           <LineChart width={400} height={400} data={data}>
-                {this.state.auchanLineIsVisible && <Line type="monotone" dataKey="auchan" stroke="#d32d41" />}
-                {this.state.epicentrLineIsVisible &&  <Line type="monotone" dataKey="epicentr" stroke="#8884d8" />}
-                {this.state.fozzyLineIsVisible &&  <Line type="monotone" dataKey="fozzy" stroke="#6ab187" />}
-            </LineChart> 
+                <LineChart width={400} height={400} data={data}>
+                    {this.state.auchanLineIsVisible && <Line type="monotone" dataKey="auchan" stroke="#d32d41" />}
+                    {this.state.epicentrLineIsVisible &&  <Line type="monotone" dataKey="epicentr" stroke="#8884d8" />}
+                    {this.state.fozzyLineIsVisible &&  <Line type="monotone" dataKey="fozzy" stroke="#6ab187" />}
+                </LineChart> 
             </div>
 
         )

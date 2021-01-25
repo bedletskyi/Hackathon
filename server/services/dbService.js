@@ -1,38 +1,32 @@
 const mongoose = require('mongoose')
+const moment = require('moment');
 const MONGODB_URI=`mongodb://localhost:27017/StatisticsDB`
 mongoose.connect(MONGODB_URI,{useNewUrlParser: true, useUnifiedTopology: true})
 
-const PriceForDaySchema = new mongoose.Schema({
-    pointOfSale:String,
+const StatisticsForDaySchema = new mongoose.Schema({
     dayOfCapture: Date,
-    price:Number
+    auchnPrice:Number,
+    epicentrPrice:Number,
+    fozzyPrice:Number,
 })
-const PriceForDay = mongoose.model('PriceForDay',PriceForDaySchema)
-const availablePointsOfSale = ['auchan.zakaz.ua','epicentrk.ua','fozzyshop.ua']
+const StatisticsForDay = mongoose.model('StatisticsForDay',StatisticsForDaySchema)
 
 export const dbService = {
 
     saveStatistics(statistics){
-        statistics.forEach(pointOfSaleStatistic => {
-            const statisticsInstance = new PriceForDay(pointOfSaleStatistic);
-            statisticsInstance.save((err,result)=>{
-                if(err) {
-                    return [];
-                }
-                return result
-            })
+        const statisticsInstance = new StatisticsForDay(statistics);
+        statisticsInstance.save((err,result)=>{
+            if(err) {
+                return [];
+            }
+            return result
         })
     },
 
-    async getStatistics(pointOfSale){
-        if(pointOfSale){
-            return await PriceForDay.find({ pointOfSale }).sort({dayOfCapture:1}).exec();
-        }
-        const statistics ={};
-        for(const pointOfSaleName of availablePointsOfSale){
-            const pointOfSaleStatistics = await PriceForDay.find({ pointOfSale: pointOfSaleName}).sort({dayOfCapture:1}).exec();
-            Object.assign(statistics,{[pointOfSaleName]:pointOfSaleStatistics})
-        }
-        return statistics;
+    async getStatistics(){
+        const statistics = await StatisticsForDay.find().sort({dayOfCapture:1}).exec();
+        return statistics.map(statisticsMember => {
+            return {...statisticsMember._doc, "dayOfCapture":moment(statisticsMember.dayOfCapture).format("DD/MM/YYYY")}
+        })
 }
 }
