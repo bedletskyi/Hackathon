@@ -123,11 +123,12 @@ class FilterComponent extends PureComponent {
                         />
                     </Form.Field>
                     <Button onClick={this.filter} primary>
-                        Filter
+                        Фільтрувати
                     </Button>
                     <Button onClick={this.setDefaultSetting} basic>
-                        Cancel
+                        Очистити
                     </Button>
+
                 </Form>
             </Segment>
         );

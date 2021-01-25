@@ -3,14 +3,36 @@
     width: 100%;
 }
 
+.card-list-header{
+    display: flex;
+    justify-content: space-between;
+}
+
 .dropdown-wrapper{
+    min-width: 160px;
+    max-width: 300px;
+    margin-bottom: 15px;
+    margin-right: 1px;
+    height: 38px;
+}
+
+.statistics-wrapper{
     min-width: 120px;
     max-width: 300px;
     margin-bottom: 15px;
     height: 38px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }
 
 .cards-wrapper{
     width: 100%;
     min-height: 70px;
+}
+
+@media only screen and (max-width: 470px) {
+    .card-list-header {
+        flex-direction: column;
+    }
 }
