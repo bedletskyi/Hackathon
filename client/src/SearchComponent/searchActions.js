@@ -1,5 +1,5 @@
 import { setDefaultFilterOptions } from '../Filter/filterActions';
-import { setProducts, setProductsToShow, setSortSettings, sortProducts, startLoading, stopLoading } from '../ProductCardsWrapper/productCardActions';
+import { setProducts, setProductsToShow, sortProducts, startLoading, stopLoading } from '../ProductCardsWrapper/productCardActions';
 
 export const SEARCH_QUERY = 'SEARCH_QUERY';
 
