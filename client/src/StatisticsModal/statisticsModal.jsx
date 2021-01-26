@@ -3,7 +3,7 @@ import { Modal, Select, Checkbox, Icon, Popup } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './statisticsModal.css';
-import { toggleStatisticsModal, loadStatistics } from './statisticsModalActions';
+import { toggleStatisticsModal, loadStatistics, setStatistics } from './statisticsModalActions';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 
 class StatisticsModal extends PureComponent {
@@ -30,6 +30,7 @@ class StatisticsModal extends PureComponent {
     
     changeTargetChartVisibility = (data) =>{
         this.setState({...this.state,[data.value]:data.checked})
+        this.props.setStatistics([...this.props.statistics])
     }
 
     changePeriod(period){
@@ -64,7 +65,7 @@ class StatisticsModal extends PureComponent {
                 onClose={() => this.props.toggleStatisticsModal()}
                 open={this.props.showStatisticsModal}>
                 <Modal.Header>Графік зміни цін на товар за пошуковим запитом "Гречана крупа" 
-                    <Popup content={`Графік створено на основі значень мінімальної ціни за 1 кілограм гречки в певному магазині на певну дату. Мінімальна ціна в магазині обирається з цін товарів, що з'являються в пошуковій видачі за запитом "Гречана крупа". Перед вибором ціни всіх знайдених товарів приводяться до форми грн/кг.`}  position='bottom left' trigger={<Icon color={"blue"} name='question circle' size="small" />} />
+                    <Popup content={`Графік створено на основі значень мінімальної ціни за 1 кілограм гречки в певному магазині на певну дату. Мінімальна ціна в магазині обирається з цін товарів, що з'являються в пошуковій видачі за запитом "Гречана крупа". Перед вибором, ціни всіх знайдених товарів приводяться до форми грн/кг.`}  position='bottom left' trigger={<Icon color={"blue"} name='question circle' size="small" />} />
                 </Modal.Header>
                 <Modal.Content>
                     {this.getModalContent()}
@@ -88,7 +89,7 @@ class StatisticsModal extends PureComponent {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({toggleStatisticsModal, loadStatistics}, dispatch);
+    return bindActionCreators({toggleStatisticsModal, setStatistics, loadStatistics}, dispatch);
 }
 
 function mapStateToProps(state) {

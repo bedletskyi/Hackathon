@@ -25,7 +25,7 @@ export default class ProductCard extends PureComponent {
                     <Image src={this.props.image} wrapped ui={false} />
                 </div>
                 <Card.Content onMouseOver={this.onHover} onMouseLeave={this.onUnHover}>
-                    <Card.Header className={'card-header'}>{this.props.name}</Card.Header>
+                    <Card.Header className={'card-header'}><a className="card-link" href={this.props.url}  target="_blank">{this.props.name}</a></Card.Header>
                     <div>
                         <div className={'card-price-wrapper'}>
                             <span className={'card-price'}>{this.props.price}</span>
@@ -41,7 +41,7 @@ export default class ProductCard extends PureComponent {
                     </div>
                 </Card.Content>
                 <Card.Content extra>
-                    <a href={this.props.site}>{this.props.site}</a>
+                    <span>{this.props.site}</span>
                 </Card.Content>
             </Card>
         );
