@@ -1,6 +1,7 @@
 # Hackathon
 
-[open website](https://awesome-buckwheat-parser.herokuapp.com/)  
+[Staging](https://awesome-buckwheat-parser.herokuapp.com/)  
+Opening the site for the first time may take some time because the free version of Heroku may fall asleep if it was not opened recently. 
 #### Go to server folder
 #### Rename 
 
