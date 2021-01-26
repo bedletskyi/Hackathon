@@ -26,11 +26,6 @@ class StatisticsModal extends PureComponent {
         {key:"year",text:"Останній рік",value:365}
     ]
 
-    onWindowResize = () => {
-        debugger
-        console.log(this.modalRef.current.offsetWidth)
-    };
-
     updateDimensions = () => {
          if(window.innerWidth<1000){
              this.setState({...this.state, chartWidth:window.innerWidth*0.8,chartHeight:window.innerHeight*0.4})
