@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 const app = express();
 const { dbService } = require('./services/dbService');
 const { addPriceInPointsOfSaleToStatisticsDb } = require('./helpers/cronJobHelper');

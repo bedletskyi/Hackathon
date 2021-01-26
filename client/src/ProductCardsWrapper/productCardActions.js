@@ -21,24 +21,30 @@ export const setProducts = (products = []) => {
     };
 };
 
-export const setSortSettings = (sortStrategy = FROM_LOWER_SORT_STRATEGY) => {
+export const sortProducts = () => {
     return (dispatch, getStore) => {
         const store = getStore();
 
         const sortedProducts = store.productsData.productsToShow.sort((product1, product2) => {
-            if (sortStrategy === FROM_LOWER_SORT_STRATEGY) {
+            if (store.productsData.sortStrategy === FROM_LOWER_SORT_STRATEGY) {
                 return product1.price - product2.price;
             }
 
             return product2.price - product1.price;
         });
 
+        dispatch(setProductsToShow(sortedProducts));
+    };
+};
+
+export const setSortSettings = (sortStrategy = FROM_LOWER_SORT_STRATEGY) => {
+    return (dispatch, getStore) => {
         dispatch({
             type: SET_SORT_SETTINGS,
             sortStrategy,
         });
 
-        dispatch(setProductsToShow(sortedProducts));
+        dispatch(sortProducts());
     };
 };
 
