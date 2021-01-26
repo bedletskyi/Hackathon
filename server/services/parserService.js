@@ -1,7 +1,6 @@
 import { callApi } from '../helpers/apiHelper';
 
 const cherio = require('cherio');
-const { PuppeteerHandler } = require('../helpers/puppeteer');
 
 const AUCHAN = 'https://stores-api.zakaz.ua/stores/48246401/products/search/?q=';
 const EPICENTR = 'https://epicentrk.ua/search/?q=';
@@ -10,11 +9,8 @@ const epicentrName = 'epicentrk.ua';
 const auchanName = 'auchan.zakaz.ua';
 const fozzyshopName = 'fozzyshop.ua';
 
-let puppeteer = null;
-
 export const parserService = {
     async getDataFromSites(searchQuery) {
-        puppeteer = new PuppeteerHandler();
         const cleanQuery = cleanString(searchQuery);
         return Promise.all([
             this.getEpicentrItems(cleanQuery),
@@ -22,8 +18,6 @@ export const parserService = {
             this.getFozzyshopItems(cleanQuery),
         ])
             .then((results) => {
-                puppeteer.closeBrowser();
-                puppeteer = null;
                 return results.flat();
             })
             .catch((err) => console.log(err));
@@ -45,7 +39,7 @@ export const parserService = {
 
     async getEpicentrItems(searchQuery) {
         try {
-            const pageContent = await puppeteer.getPageContent(EPICENTR + searchQuery);
+            const pageContent = await callApi(EPICENTR + searchQuery);
             const $ = cherio.load(pageContent);
             const cardWrapper = $('#bottom-sticky .card-wrapper');
             let items = [];
@@ -101,34 +95,22 @@ export const parserService = {
 
     async getFozzyshopItems(searchQuery) {
         try {
-            const pageContent = await puppeteer.getPageContent(FOZZYSHOP + searchQuery);
-            const $ = cherio.load(pageContent);
+            const pageContent = await callApi(FOZZYSHOP + searchQuery);
+            const $ = cherio.load(pageContent.rendered_products);
             const cardWrapper = $('.products .js-product-miniature-wrapper');
-            let items = [];
-
-            if (!$(cardWrapper).length) {
-                return items;
-            }
-
-            $(cardWrapper).each(async (i, item) => {
-                const card = $(item).children();
-                const image = $(card).find('.thumbnail-container a img').attr('src');
-                const name = $(card).find('.product-title a').text();
-                const price = $(card).find('.product-price-and-shipping a span').attr('content');
-                const weight = $(card).find('.product-reference a').first().text();
-
+            return pageContent.products.reduce((prices, item, index) => {
+                const htmlItem = $(cardWrapper).get(index);
+                const htmlWeight = $(htmlItem).find('.product-reference a').first().text();
                 const newItem = {
-                    name: cleanString(name),
-                    image,
-                    price: getNumberFromString(price),
-                    weight: getWeightFromDiffValues(weight),
+                    name: item.name,
+                    price: item.price_amount,
+                    image: item.cover.small.url,
+                    weight: getWeightFromDiffValues(htmlWeight),
                     site: fozzyshopName,
                 };
 
-                items = [...items, newItem];
-            });
-
-            return items;
+                return [...prices, newItem];
+            }, []);
         } catch (error) {
             console.log(error.message);
             return [];
