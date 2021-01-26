@@ -2,7 +2,7 @@
 
 ### Prepearing and running client:
 
-Go to client folder,
+#### Go to client folder,
 #### Install modules:
 
 ```
@@ -25,8 +25,11 @@ npm run start
 
 #### Go to client folder
 
-Rename .env-sample file to .env
+#### Rename 
 
+```
+.env-sample file to .env
+```
 #### Install modules:
 
 ``` 
