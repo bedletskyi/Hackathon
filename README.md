@@ -1,33 +1,33 @@
 # Hackathon
 
-Prepearing and running client:
+### Prepearing and running client:
 
 Go to client folder,
-Install modules:
+#### Install modules:
 
 ```
 npm i 
 ```
 
-Build app:
+#### Build app:
 
 ```
 npm run build 
 ```
 
-Run client:
+#### Run client:
 
 ```
 npm run start
 ```
 
-Prepearing and running server:
+### Prepearing and running server:
 
-Go to client folder
+#### Go to client folder
 
 Rename .env-sample file to .env
 
-Install modules:
+#### Install modules:
 
 ``` 
 npm install -g nodemon
