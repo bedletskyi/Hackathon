@@ -76,6 +76,10 @@ class FilterComponent extends PureComponent {
 
     setDefaultSetting = () => {
         this.props.setDefaultFilterOptions();
+        this.setState({
+            selectedPriceRange: [0, this.props.maxPrice],
+            selectedWeightRange: [0, this.props.maxWeight],
+        })
     };
 
     render() {

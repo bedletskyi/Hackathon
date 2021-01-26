@@ -1,4 +1,4 @@
-import { setProductsToShow } from '../ProductCardsWrapper/productCardActions';
+import { setProductsToShow, sortProducts } from '../ProductCardsWrapper/productCardActions';
 
 export const SET_FILTER_OPTIONS = 'SET_FILTER_OPTIONS';
 
@@ -15,6 +15,7 @@ export function filterItems({ priceRange, weightRange }) {
         });
 
         dispatch(setProductsToShow(filteredItems));
+        dispatch(sortProducts())
     };
 }
 
