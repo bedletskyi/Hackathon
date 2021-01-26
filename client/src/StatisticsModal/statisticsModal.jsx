@@ -13,7 +13,9 @@ class StatisticsModal extends PureComponent {
             auchanLineIsVisible : true,
             epicentrLineIsVisible : true,
             fozzyLineIsVisible : true,
-            period :3
+            period :3,
+            chartWidth: 600,
+            chartHeight: 400
         }
     }
 
@@ -24,8 +26,25 @@ class StatisticsModal extends PureComponent {
         {key:"year",text:"Останній рік",value:365}
     ]
 
+    onWindowResize = () => {
+        debugger
+        console.log(this.modalRef.current.offsetWidth)
+    };
+
+    updateDimensions = () => {
+         if(window.innerWidth<1000){
+             this.setState({...this.state, chartWidth:window.innerWidth*0.8,chartHeight:window.innerHeight*0.4})
+         }
+      };
+
     componentDidMount() {
+        this.updateDimensions();
         this.props.loadStatistics(3);
+        window.addEventListener('resize', this.updateDimensions);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateDimensions);
     }
     
     changeTargetChartVisibility = (data) =>{
@@ -44,7 +63,7 @@ class StatisticsModal extends PureComponent {
     getModalContent = () =>{
         return (
             <div className="chart-wrapper">               
-                <LineChart width={600} height={400} data={this.props.statistics}>
+                <LineChart width={this.state.chartWidth} height={this.state.chartHeight} data={this.props.statistics}>
                 <XAxis dataKey="dayOfCapture" />
                 <YAxis/>
                 <Legend/>
@@ -65,7 +84,7 @@ class StatisticsModal extends PureComponent {
                 onClose={() => this.props.toggleStatisticsModal()}
                 open={this.props.showStatisticsModal}>
                 <Modal.Header>Графік зміни цін на товар за пошуковим запитом "Гречана крупа" 
-                    <Popup content={`Графік створено на основі значень мінімальної ціни за 1 кілограм гречки в певному магазині на певну дату. Мінімальна ціна в магазині обирається з цін товарів, що з'являються в пошуковій видачі за запитом "Гречана крупа". Перед вибором, ціни всіх знайдених товарів приводяться до форми грн/кг.`}  position='bottom left' trigger={<Icon color={"blue"} name='question circle' size="small" />} />
+                    <Popup content={`Графік створено на основі значень мінімальної ціни за 1 кілограм гречки в певному магазині на певну дату. Мінімальна ціна в магазині обирається з цін товарів, що з'являються в пошуковій видачі за запитом "Гречана крупа". Перед вибором, ціни всіх знайдених товарів приводяться до форми грн/кг.`}  position='bottom center' trigger={<Icon color={"blue"} name='question circle' size="small" />} />
                 </Modal.Header>
                 <Modal.Content>
                     {this.getModalContent()}
