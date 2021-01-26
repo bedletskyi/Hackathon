@@ -1,3 +1,6 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
 const express = require('express');
 require('dotenv').config();
 const app = express();
@@ -29,11 +32,9 @@ app.get('/stats', (req, res) => {
 
 app.get('/products', (req, res, next) => {
     const searchQuery = req.query.search || 'Гречана крупа';
-    console.log(searchQuery);
     parserService
         .getDataFromSites(searchQuery)
         .then((products) => {
-            console.log('products');
             res.send({
                 value: products.filter((product) => product.weight),
             });
