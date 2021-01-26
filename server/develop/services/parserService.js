@@ -52,6 +52,7 @@ export const parserService = {
                 const card = $(item).children().children();
                 const image = $(card).find('.card__photo img').attr('src');
                 const name = $(card).find('.card__name .custom-link .nc').text();
+                const url = $(card).find('.card__name .custom-link').attr('href');
                 const price = $(card).find('.card__price .card__price-row .card__price-actual').children().text();
                 const weight = $(card).find('.card__characteristics li').first().next().text();
 
@@ -60,6 +61,7 @@ export const parserService = {
                     image,
                     price: getNumberFromString(price),
                     weight: convertToKg(getNumberFromString(weight)),
+                    url: 'https://epicentrk.ua/' + url,
                     site: epicentrName,
                 };
 
@@ -82,6 +84,7 @@ export const parserService = {
                     price: item.price / 100,
                     image: item.img.s150x150,
                     weight: item.unit === 'kg' ? item.bundle : Math.round(item.weight / 100) / 10,
+                    url: item.web_url,
                     site: auchanName,
                 };
 
@@ -101,11 +104,13 @@ export const parserService = {
             return pageContent.products.reduce((prices, item, index) => {
                 const htmlItem = $(cardWrapper).get(index);
                 const htmlWeight = $(htmlItem).find('.product-reference a').first().text();
+                const url = $(htmlItem).find('.product-title a').attr('href');
                 const newItem = {
                     name: item.name,
                     price: item.price_amount,
                     image: item.cover.small.url,
                     weight: getWeightFromDiffValues(htmlWeight),
+                    url,
                     site: fozzyshopName,
                 };
 
