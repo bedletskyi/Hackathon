@@ -26,6 +26,18 @@
     cursor: pointer;
 }
 
+
+
+.statistics-wrapper-disabled{
+    min-width: 120px;
+    max-width: 300px;
+    margin-bottom: 15px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    cursor: not-allowed;
+}
+
 .cards-wrapper{
     width: 100%;
     min-height: 70px;

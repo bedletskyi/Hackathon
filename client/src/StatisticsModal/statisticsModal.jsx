@@ -15,7 +15,6 @@ class StatisticsModal extends PureComponent {
             fozzyLineIsVisible : true,
             period :3
         }
-        this.props.loadStatistics(3);
     }
 
     periodSelectOptions = [
@@ -24,6 +23,10 @@ class StatisticsModal extends PureComponent {
         {key:"month",text:"Останній місяць",value:30},
         {key:"year",text:"Останній рік",value:365}
     ]
+
+    componentDidMount() {
+        this.props.loadStatistics(3);
+    }
     
     changeTargetChartVisibility = (data) =>{
         this.setState({...this.state,[data.value]:data.checked})
