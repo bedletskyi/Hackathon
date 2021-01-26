@@ -1,5 +1,5 @@
 import { setDefaultFilterOptions } from '../Filter/filterActions';
-import { setProducts, setProductsToShow, setSortSettings, startLoading, stopLoading } from '../ProductCardsWrapper/productCardActions';
+import { setProducts, setProductsToShow, setSortSettings, sortProducts, startLoading, stopLoading } from '../ProductCardsWrapper/productCardActions';
 
 export const SEARCH_QUERY = 'SEARCH_QUERY';
 
@@ -18,7 +18,7 @@ export function searchAction(query) {
                 dispatch(setProducts(value));
                 dispatch(setProductsToShow(value));
                 dispatch(setDefaultFilterOptions());
-                dispatch(setSortSettings());
+                dispatch(sortProducts());
                 dispatch(stopLoading())
             } else {
                 debugger;
