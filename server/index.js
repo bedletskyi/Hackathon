@@ -27,7 +27,7 @@ app.get('/stats', (req, res) => {
 });
 
 app.get('/products', (req, res, next) => {
-    const searchQuery = req.query.search || 'крупа гречана';
+    const searchQuery = req.query.search || 'Гречана крупа';
     console.log(searchQuery);
     parserService
         .getDataFromSites(searchQuery)

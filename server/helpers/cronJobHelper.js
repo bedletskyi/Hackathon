@@ -1,7 +1,7 @@
 const {dbService} = require('../services/dbService');
 const {parserService} = require('../services/parserService');
 
-const SELECTED_SEARCH_REQUEST = "крупа гречана";
+const SELECTED_SEARCH_REQUEST = "Гречана крупа";
 
 const addPriceInPointsOfSaleToStatisticsDb = () =>{
 
