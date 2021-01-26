@@ -21,11 +21,13 @@ Run client:
 npm run start
 ```
 
+Prepearing and running server:
+
 Go to client folder
 
 Rename .env-sample file to .env
 
-Prepearing and running server:
+Install modules:
 
 ``` 
 npm install -g nodemon
