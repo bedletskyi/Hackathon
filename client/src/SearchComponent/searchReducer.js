@@ -1,14 +1,14 @@
-import { SEARCH_ACTION } from "./searchActions";
+import { SEARCH_QUERY } from './searchActions';
 
-const initialState={
-    query:'',
-}
+const initialState = {
+    query: '',
+};
 
-export default function searchData(state=initialState, action){
-    switch (action.type){
-        case SEARCH_ACTION:
-            return {...state, query:action.query}
+export default function searchData(state = initialState, action) {
+    switch (action.type) {
+        case SEARCH_QUERY:
+            return { ...state, query: action.query };
         default:
-            return state
+            return state;
     }
 }

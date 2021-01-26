@@ -1,105 +1,12 @@
-import { SET_PRODUCTS_TO_SHOW, SET_PRODUCTS } from './productCardActions';
+import { SET_PRODUCTS_TO_SHOW, SET_PRODUCTS, SET_SORT_SETTINGS, SET_LOADING_STATE, INITIAL_SEARCH_CALLED } from './productCardActions';
+import { FROM_LOWER_SORT_STRATEGY } from './sortStrategies';
 
 const initialState = {
-    products: [
-        {
-            name: 'mem',
-            image: 'https://i2.rozetka.ua/goods/20812039/asus_90mp0210_bpua00_images_20812039341.png',
-            brand: 'Asus',
-            weight: 100,
-            price: 50,
-            site: 'https://rozetka.com.ua/',
-        },
-        {
-            name: 'mem',
-            image: 'https://i8.rozetka.ua/goods/20652778/asus_90mp01m0_bpua00_images_20652778701.png',
-            brand: 'Asus',
-            weight: 100,
-            price: 50,
-            site: 'https://rozetka.com.ua/',
-        },
-        {
-            name: 'mem',
-            image: 'https://i8.rozetka.ua/goods/20652778/asus_90mp01m0_bpua00_images_20652778701.png',
-            brand: 'Asus',
-            weight: 100,
-            price: 50,
-            site: 'https://rozetka.com.ua/',
-        },
-        {
-            name: 'mem',
-            image: 'https://i8.rozetka.ua/goods/20652778/asus_90mp01m0_bpua00_images_20652778701.png',
-            brand: 'Asus',
-            weight: 100,
-            price: 50,
-            site: 'https://rozetka.com.ua/',
-        },
-        {
-            name: 'mem',
-            image: 'https://i8.rozetka.ua/goods/20652778/asus_90mp01m0_bpua00_images_20652778701.png',
-            brand: 'Asus',
-            weight: 100,
-            price: 50,
-            site: 'https://rozetka.com.ua/',
-        },
-        {
-            name: 'mem',
-            image: 'https://i8.rozetka.ua/goods/20652778/asus_90mp01m0_bpua00_images_20652778701.png',
-            brand: 'Asus',
-            weight: 100,
-            price: 50,
-            site: 'https://rozetka.com.ua/',
-        },
-        {
-            name: 'mem',
-            image: 'https://i8.rozetka.ua/goods/20652778/asus_90mp01m0_bpua00_images_20652778701.png',
-            brand: 'Asus',
-            weight: 100,
-            price: 50,
-            site: 'https://rozetka.com.ua/',
-        },
-        {
-            name: 'mem',
-            image: 'https://i8.rozetka.ua/goods/20652778/asus_90mp01m0_bpua00_images_20652778701.png',
-            brand: 'Asus',
-            weight: 100,
-            price: 50,
-            site: 'https://rozetka.com.ua/',
-        },
-        {
-            name: 'mem',
-            image: 'https://i8.rozetka.ua/goods/20652778/asus_90mp01m0_bpua00_images_20652778701.png',
-            brand: 'Asus',
-            weight: 100,
-            price: 50,
-            site: 'https://rozetka.com.ua/',
-        },
-        {
-            name: 'mem',
-            image: 'https://i8.rozetka.ua/goods/20652778/asus_90mp01m0_bpua00_images_20652778701.png',
-            brand: 'Asus',
-            weight: 100,
-            price: 50,
-            site: 'https://rozetka.com.ua/',
-        },
-        {
-            name: 'mem',
-            image: 'https://i8.rozetka.ua/goods/20652778/asus_90mp01m0_bpua00_images_20652778701.png',
-            brand: 'Asus',
-            weight: 100,
-            price: 50,
-            site: 'https://rozetka.com.ua/',
-        },
-        {
-            name: 'mem',
-            image: 'https://i8.rozetka.ua/goods/20652778/asus_90mp01m0_bpua00_images_20652778701.png',
-            brand: 'Asus',
-            weight: 100,
-            price: 50,
-            site: 'https://rozetka.com.ua/',
-        },
-    ],
+    products: [],
     productsToShow: [],
+    sortStrategy: FROM_LOWER_SORT_STRATEGY,
+    loading: false,
+    initialSearchCalled: false
 };
 
 export default function productsData(state = initialState, action) {
@@ -108,6 +15,12 @@ export default function productsData(state = initialState, action) {
             return { ...state, productsToShow: action.products };
         case SET_PRODUCTS:
             return { ...state, products: action.products };
+        case SET_SORT_SETTINGS:
+            return { ...state, sortStrategy: action.sortStrategy };
+        case SET_LOADING_STATE:
+            return { ...state, loading: action.loading };
+        case INITIAL_SEARCH_CALLED:
+            return { ...state, initialSearchCalled: true}
         default:
             return state;
     }

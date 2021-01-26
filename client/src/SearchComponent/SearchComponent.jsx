@@ -1,26 +1,21 @@
 import React, { PureComponent } from 'react';
-import { Button, Form, Item, Segment } from 'semantic-ui-react';
-import { searchAction } from './searchActions';
+import { Button, Form, Segment } from 'semantic-ui-react';
+import { searchAction, setSearchQuery } from './searchActions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './search.css';
 
-class ExampleComponent extends PureComponent {
+class SearchComponent extends PureComponent {
     constructor(props) {
         super(props);
-        this.state = {
-            searchValue: '',
-        };
     }
 
     onSearchChange = (e, { value }) => {
-        this.setState({
-            searchValue: value,
-        });
+        this.props.setSearchQuery(value);
     };
 
     onSearchSubmitted = () => {
-        this.props.searchAction(this.state.searchValue);
+        this.props.searchAction(this.props.query);
     };
 
     render() {
@@ -30,7 +25,7 @@ class ExampleComponent extends PureComponent {
                     <Form.Group className="search-box">
                         <Form.Input
                             className="search-input"
-                            value={this.state.searchValue}
+                            value={this.props.query}
                             onChange={this.onSearchChange}
                             placeholder="Гречка, рис, телефон..."
                         />
@@ -48,13 +43,16 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators(
         {
             searchAction,
+            setSearchQuery,
         },
         dispatch
     );
 }
 
 function mapStateToProps(state) {
-    return {};
+    return {
+        query: state.searchData.query,
+    };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExampleComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchComponent);
