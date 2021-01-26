@@ -33,11 +33,14 @@ npm run start
 #### Install modules:
 
 ``` 
-npm install -g nodemon
 npm i
 ```
 
-Run server:
+#### Build server:
 ```
-npm run hot-server 
+npm run build
+```
+#### Run server: 
+```
+npm run start
 ```
