@@ -1,4 +1,4 @@
-import {TOGGLE_STATISTICS_MODAL, TOGGLE_STATISTICS_SPINNER,SET_STATISTICS } from './statisticsModalActions';
+import {TOGGLE_STATISTICS_MODAL,SET_STATISTICS } from './statisticsModalActions';
 
 const initialState = {
     showStatisticsModal: false,
