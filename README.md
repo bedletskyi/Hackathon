@@ -21,6 +21,10 @@ Run client:
 npm run start
 ```
 
+Go to client folder
+
+Rename .env-sample file to .env
+
 Prepearing and running server:
 
 ``` 
