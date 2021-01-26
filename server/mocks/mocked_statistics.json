@@ -48,5 +48,12 @@
             "epicentrPrice":45,
             "fozzyPrice":39.8
         }
+        ,
+        {
+            "dayOfCapture": "2021-01-26T00:00:00.912Z",
+            "auchanPrice":44,
+            "epicentrPrice":44,
+            "fozzyPrice":38.8
+        }
     ]
 }
