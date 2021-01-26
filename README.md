@@ -23,7 +23,7 @@ npm run start
 
 ### Prepearing and running server:
 
-#### Go to client folder
+#### Go to server folder
 
 #### Rename 
 
