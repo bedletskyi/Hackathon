@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node build/index.js",
     "build": "babel develop --out-dir build",
-    "hot-server": "nodemon --inspect --exec babel-node index.js"
+    "hot-server": "nodemon --inspect --exec babel-node develop/index.js"
   },
   "author": "",
   "license": "ISC",
