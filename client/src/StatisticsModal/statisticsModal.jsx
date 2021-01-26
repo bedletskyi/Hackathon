@@ -15,7 +15,6 @@ class StatisticsModal extends PureComponent {
             fozzyLineIsVisible : true,
             period :3
         }
-        this.props.loadStatistics(3);
     }
 
     periodSelectOptions = [
@@ -24,6 +23,10 @@ class StatisticsModal extends PureComponent {
         {key:"month",text:"Останній місяць",value:30},
         {key:"year",text:"Останній рік",value:365}
     ]
+
+    componentDidMount() {
+        this.props.loadStatistics(3);
+    }
     
     changeTargetChartVisibility = (data) =>{
         this.setState({...this.state,[data.value]:data.checked})
@@ -60,8 +63,8 @@ class StatisticsModal extends PureComponent {
             <Modal
                 onClose={() => this.props.toggleStatisticsModal()}
                 open={this.props.showStatisticsModal}>
-                <Modal.Header>Графік зміни цін на товар за пошуковим запитом "крупа гречана" 
-                    <Popup content={`Графік створений на основі значень мінімальної ціни за 1 кілограм гречки в певному магазині на певну дату. Мінімальна ціна в магазині обирається з цін товарів, що з'вляються в пошуковій видачі за запитом "крупа гречана". Перед вбором ціни всіх знайдених товарів приводяться до форми грн/кг.`}  position='bottom left' trigger={<Icon color={"blue"} name='question circle' size="small" />} />
+                <Modal.Header>Графік зміни цін на товар за пошуковим запитом "Гречана крупа" 
+                    <Popup content={`Графік створений на основі значень мінімальної ціни за 1 кілограм гречки в певному магазині на певну дату. Мінімальна ціна в магазині обирається з цін товарів, що з'вляються в пошуковій видачі за запитом "Гречана крупа". Перед вбором ціни всіх знайдених товарів приводяться до форми грн/кг.`}  position='bottom left' trigger={<Icon color={"blue"} name='question circle' size="small" />} />
                 </Modal.Header>
                 <Modal.Content>
                     {this.getModalContent()}

@@ -8,14 +8,18 @@ import './search.css';
 class SearchComponent extends PureComponent {
     constructor(props) {
         super(props);
+        this.state = {
+            search: "Гречана крупа",
+        };
     }
 
     onSearchChange = (e, { value }) => {
-        this.props.setSearchQuery(value);
+        this.setState({search:value});
     };
 
     onSearchSubmitted = () => {
-        this.props.searchAction(this.props.query);
+        this.props.setSearchQuery(this.state.search)
+        this.props.searchAction(this.state.search);
     };
 
     render() {
@@ -25,7 +29,7 @@ class SearchComponent extends PureComponent {
                     <Form.Group className="search-box">
                         <Form.Input
                             className="search-input"
-                            value={this.props.query}
+                            value={this.state.search}
                             onChange={this.onSearchChange}
                             placeholder="Гречка, рис, телефон..."
                         />

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Segment, Card, Grid, Dropdown, Image, Icon } from 'semantic-ui-react';
+import { Segment, Popup, Grid, Dropdown, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './productCardsWrapper.css';
@@ -43,6 +43,27 @@ class ProductCardsWrapper extends PureComponent {
             </Grid.Column>
         );
     };
+
+    getStatistics =() =>{
+        if(this.props.query.toLowerCase()==='гречана крупа'){
+            return (
+                <div className="statistics-wrapper" onClick={this.showStatistics}>
+                    <Icon name="chart line" color="blue" size="large" />
+                    <p>Переглянути графік зміни цін</p>
+                </div>
+            );
+        }
+        return (
+            <Popup content={`Графік цін доступний лише для пошукової видачі за запитом "Гречана крупа"`}  
+                position='bottom left' 
+                trigger={
+                    <div className="statistics-wrapper-disabled">
+                        <Icon name="chart line" color="grey" size="large" />
+                        <p>Переглянути графік зміни цін</p>
+                    </div>
+                } />
+            );
+    }
 
     getEmptyCard = () => {
         return (
@@ -97,10 +118,7 @@ class ProductCardsWrapper extends PureComponent {
                             onChange={this.onSortChange}
                         />
                     </div>
-                    <div className="statistics-wrapper" onClick={this.showStatistics}>
-                        <Icon name="chart line" color="blue" size="large" />
-                        <p>Переглянути графік зміни цін</p>
-                    </div>
+                    {this.getStatistics()}
                 </div>
 
                 <div ref={this.cardsRef}>
@@ -123,6 +141,7 @@ function mapStateToProps(state) {
         products: state.productsData.productsToShow || [],
         sortStrategy: state.productsData.sortStrategy,
         loading: state.productsData.loading,
+        query: state.searchData.query,
     };
 }
 

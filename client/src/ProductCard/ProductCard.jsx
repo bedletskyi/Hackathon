@@ -25,7 +25,7 @@ export default class ProductCard extends PureComponent {
                     <Image src={this.props.image} wrapped ui={false} />
                 </div>
                 <Card.Content onMouseOver={this.onHover} onMouseLeave={this.onUnHover}>
-                    <Card.Header>{this.props.name}</Card.Header>
+                    <Card.Header className={'card-header'}>{this.props.name}</Card.Header>
                     <div>
                         <div className={'card-price-wrapper'}>
                             <span className={'card-price'}>{this.props.price}</span>

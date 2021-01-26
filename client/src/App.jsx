@@ -4,7 +4,7 @@ import SearchComponent from './SearchComponent/SearchComponent';
 import FilterComponent from './Filter/Filter';
 import ProductCardsWrapper from './ProductCardsWrapper/ProductCardsWrapper';
 import store from './root/store';
-import { Grid, Image } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 
 export default class App extends React.Component {
     constructor(props) {
