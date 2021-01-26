@@ -1,7 +1,14 @@
 # Hackathon
 
+#### Go to server folder
+#### Rename 
+
+```
+.env-sample file to .env
+```
 ### Prepearing and running client:
 
+Now you can run the project using CLI or docker. Go to **scripts** folder if you want to run in docker 
 #### Go to client folder,
 #### Install modules:
 
@@ -25,11 +32,6 @@ npm run start
 
 #### Go to server folder
 
-#### Rename 
-
-```
-.env-sample file to .env
-```
 #### Install modules:
 
 ``` 
