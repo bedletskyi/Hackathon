@@ -3,7 +3,7 @@ import { Modal, Select, Checkbox, Icon, Popup } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './statisticsModal.css';
-import { toggleStatisticsModal, loadStatistics } from './statisticsModalActions';
+import { toggleStatisticsModal, loadStatistics, setStatistics } from './statisticsModalActions';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 
 class StatisticsModal extends PureComponent {
@@ -30,6 +30,7 @@ class StatisticsModal extends PureComponent {
     
     changeTargetChartVisibility = (data) =>{
         this.setState({...this.state,[data.value]:data.checked})
+        this.props.setStatistics([...this.props.statistics])
     }
 
     changePeriod(period){
@@ -88,7 +89,7 @@ class StatisticsModal extends PureComponent {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({toggleStatisticsModal, loadStatistics}, dispatch);
+    return bindActionCreators({toggleStatisticsModal, setStatistics, loadStatistics}, dispatch);
 }
 
 function mapStateToProps(state) {
