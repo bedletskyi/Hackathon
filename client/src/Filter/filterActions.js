@@ -5,7 +5,7 @@ export const SET_FILTER_OPTIONS = 'SET_FILTER_OPTIONS';
 export function filterItems({ priceRange, weightRange }) {
     return (dispatch, getStore) => {
         const store = getStore();
-        const filteredItems = store.productsData.products.filter((item) => {
+        const filteredItems = store.productsData.productsToShow.filter((item) => {
             return (
                 priceRange[0] <= item.price &&
                 priceRange[1] >= item.price &&
