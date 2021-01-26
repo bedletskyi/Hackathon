@@ -8,7 +8,7 @@ To build all containers use
 ./build.sh
 ```
 
-To run all containers with logs go to .docker folder and use
+## Go to .docker folder and run
 
 ```
 docker-compose up
