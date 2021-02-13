@@ -1,3 +1,5 @@
+#!/bin/bash
+
 docker login -u "$DOCKER_ID" -p "$DOCKER_PASSWORD"
 
 docker tag api:latest randommargin/dockerhub:api
