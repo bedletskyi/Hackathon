@@ -1,0 +1,9 @@
+sudo: required
+services:
+  - docker
+script: bash scripts/build.sh
+branches:
+  only:
+    - master
+before_deploy:
+  - bash scripts/deploy.sh
