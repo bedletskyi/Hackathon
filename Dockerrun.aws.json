@@ -4,6 +4,7 @@
     {
       "image": "randommargin/hackathon:client",
       "name": "hackathon-client",
+      "essential": true,
       "links": [
         "hackathon-api"
       ],
@@ -18,6 +19,7 @@
     {
       "image": "randommargin/hackathon:api",
       "name": "hackathon-api",
+      "essential": true,
       "environment": [
         {
           "name": "PORT",
