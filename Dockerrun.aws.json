@@ -2,7 +2,6 @@
   "AWSEBDockerrunVersion": 2,
   "containerDefinitions": [
     {
-      "essential": false,
       "image": "randommargin/hackathon:client",
       "name": "hackathon-client",
       "links": [
@@ -17,7 +16,6 @@
       "memory": 500
     },
     {
-      "essential": false,
       "image": "randommargin/hackathon:api",
       "name": "hackathon-api",
       "environment": [
