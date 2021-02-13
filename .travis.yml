@@ -6,3 +6,14 @@ script:
 branches:
   only:
     - master
+deploy:
+  provider: elasticbeanstalk
+  region: eu-central-1
+  app: hackathon-olade
+  env: Hackathonolade-env
+  bucket_name: elasticbeanstalk-eu-central-1-263622509100
+  bucket_path: hackathon-olade
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
