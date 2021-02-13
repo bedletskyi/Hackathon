@@ -9,5 +9,6 @@ RUN npm audit fix
 COPY . /app
 
 RUN npm run build
+EXPOSE 5000
 
 ENTRYPOINT ["npm", "start"]
