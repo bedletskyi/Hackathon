@@ -1,0 +1,42 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "essential": false,
+      "image": "randommargin/hackathon:client",
+      "name": "hackathon-client",
+      "links": [
+        "hackathon-api"
+      ],
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80
+        }
+      ],
+      "memory": 500
+    },
+    {
+      "essential": false,
+      "image": "randommargin/hackathon:api",
+      "name": "hackathon-api",
+      "environment": [
+        {
+          "name": "PORT",
+          "value": "5000"
+        },
+        {
+          "name": "MONGODB_URI",
+          "value": "mongodb+srv://buckwheatman:qvM0j4LKieLJkZGn@cluster0.oscfi.mongodb.net/Statistics?retryWrites=true&w=majority"
+        }
+      ],
+      "portMappings": [
+        {
+          "containerPort": 5000,
+          "hostPort": 80
+        }
+      ],
+      "memory": 500
+    }
+  ]
+}
