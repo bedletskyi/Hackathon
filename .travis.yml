@@ -1,8 +1,8 @@
 services:
   - docker
-script: bash scripts/build.sh
+script:
+  - bash scripts/build.sh
+  - bash scripts/deploy.sh
 branches:
   only:
     - master
-before_deploy:
-  - bash scripts/deploy.sh
