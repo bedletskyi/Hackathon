@@ -1,33 +1,12 @@
 {
   "AWSEBDockerrunVersion": 2,
-  "volumes": [
-    {
-      "name": "client-volume",
-      "host": {
-        "sourcePath": "/var/client/current/"
-      }
-    },
-    {
-      "name": "api-volume",
-      "host": {
-        "sourcePath": "/var/api/current/"
-      }
-    }
-  ],
   "containerDefinitions": [
     {
-      "image": "randommargin/hackathon:client",
+      "image": "randommargin/dockerhub:client",
       "name": "hackathon-client",
       "essential": true,
       "links": [
         "hackathon-api"
-      ],
-      "mountPoints": [
-        {
-          "sourceVolume": "client-volume",
-          "containerPath": "/client",
-          "readOnly": true
-        }
       ],
       "portMappings": [
         {
@@ -38,7 +17,7 @@
       "memory": 500
     },
     {
-      "image": "randommargin/hackathon:api",
+      "image": "randommargin/dockerhub:api",
       "name": "hackathon-api",
       "essential": true,
       "environment": [
@@ -49,13 +28,6 @@
         {
           "name": "MONGODB_URI",
           "value": "mongodb+srv://buckwheatman:qvM0j4LKieLJkZGn@cluster0.oscfi.mongodb.net/Statistics?retryWrites=true&w=majority"
-        }
-      ],
-      "mountPoints": [
-        {
-          "sourceVolume": "api-volume",
-          "containerPath": "/api",
-          "readOnly": true
         }
       ],
       "portMappings": [
