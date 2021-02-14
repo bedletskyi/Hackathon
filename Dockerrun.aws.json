@@ -14,12 +14,12 @@
           "hostPort": 80
         }
       ],
-      "memory": 500
+      "memory": 300
     },
     {
       "image": "randommargin/dockerhub:api",
       "name": "hackathon-api",
-      "essential": true,
+      "essential": false,
       "environment": [
         {
           "name": "PORT",
@@ -36,7 +36,7 @@
           "hostPort": 5000
         }
       ],
-      "memory": 500
+      "memory": 300
     }
   ]
 }
